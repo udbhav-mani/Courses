@@ -34,7 +34,7 @@ class BestFriend(Friend):
 
 rahul = Friend("rahul", 20)
 rohit = Friend("rohit", 22)
-raj = BestFriend("raj", 23, 15)
+raj = BestFriend("raj", 23, 16)
 
 # rohit.print
 
