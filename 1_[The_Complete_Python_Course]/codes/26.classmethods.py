@@ -29,8 +29,7 @@ class BestFriend(Friend):
         self.time = time
 
     def __str__(self):
-        return f"Name - {self.name}, age - {self.age}, time - {self.time}."
-
+        return f"Name - {self.name}, age - {self.age}, time - {self.time}.   
 
 rahul = Friend("rahul", 20)
 rohit = Friend("rohit", 22)
