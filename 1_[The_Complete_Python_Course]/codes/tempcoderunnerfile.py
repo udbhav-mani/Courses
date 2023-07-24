@@ -1,6 +1,12 @@
-Friend.print_details("Ram", 32)
+def power_of_two():
+    user_input = input("Please enter a number: ")
+    try:
+        n = float(user_input)
+    except ValueError:
+        print("Your input was invalid.")
+    finally:
+        n_square = n**2
+        return n_square
 
-# # rohit's print using __str__
-# print(rohit)
-# # raj's print using __str__
-# print(raj)
+
+power_of_two()
