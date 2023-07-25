@@ -1,0 +1,5 @@
+
+Hello World,
+This is the text from the lecture which taught us 
+- importing from a file
+Tried utils
