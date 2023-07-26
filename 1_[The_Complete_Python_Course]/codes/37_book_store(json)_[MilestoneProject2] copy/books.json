@@ -1,0 +1,22 @@
+[
+  {
+    "name": "gh",
+    "author": "uj",
+    "read": true
+  },
+  {
+    "name": "rfv",
+    "author": "kjuyt",
+    "read": true
+  },
+  {
+    "name": "rfg",
+    "author": "oij",
+    "read": false
+  },
+  {
+    "name": "vgh",
+    "author": "jhg",
+    "read": false
+  }
+]
