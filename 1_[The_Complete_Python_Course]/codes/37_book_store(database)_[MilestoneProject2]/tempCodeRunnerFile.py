@@ -12,7 +12,6 @@ Your choice: """
 
 
 def menu():
-    database.create_new_booktable()
     user_input = input(USER_CHOICE)
 
     while user_input != "q":
@@ -30,7 +29,7 @@ def prompt_add_book():
 def list_book():
     books = database.list_book()
     for index, book in enumerate(books, start=1):
-        read = "Read." if book["read"] == 1 else "Not Read."
+        read = "read" if book["read"] == "True" else "Not read"
         print(
             f"{index}. {book['name'].title()} written by {book['author'].title()}, STATUS - {read}"
         )

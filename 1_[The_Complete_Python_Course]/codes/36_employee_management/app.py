@@ -1,4 +1,4 @@
-import input_functions
+import controllers.input_functions as input_functions
 
 
 user_validations = {

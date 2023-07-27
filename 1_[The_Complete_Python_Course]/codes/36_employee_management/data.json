@@ -28,7 +28,13 @@
       "name": "Rohit",
       "id": 5,
       "email": "Rohit@gmail.com",
-      "department": "IT"
+      "department": "Engineering"
+    },
+    {
+      "name": "Mohit",
+      "id": "6",
+      "email": "mohit@gmail.com",
+      "department": "Finance"
     }
   ]
 }
