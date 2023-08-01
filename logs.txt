@@ -1,0 +1,4 @@
+main-logger :: INFO     :: This is a info message
+main-logger :: CRITICAL :: This is a info message
+__main__ :: INFO     :: This is a info message
+__main__ :: CRITICAL :: This is a info message
