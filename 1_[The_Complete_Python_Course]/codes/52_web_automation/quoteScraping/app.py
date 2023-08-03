@@ -1,8 +1,15 @@
-import requests
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+
 from pages.quotes_page import QuotesPage
 
-page_content = requests.get("http://quotes.toscrape.com").content
-page = QuotesPage(page_content)
+author = input("Enter author - ")
+tag = input("Enter tag - ")
 
-for quote in page.quotes:
-    print(quote)
+chrome = webdriver.Chrome()
+chrome.get("http://quotes.toscrape.com/search.aspx")
+page = QuotesPage(chrome)
+
+
+print(page.search_quote(author, tag))

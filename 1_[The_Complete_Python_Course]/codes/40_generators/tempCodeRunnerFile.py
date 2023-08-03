@@ -1,8 +1,2 @@
-print(next(gen))
-print(next(gen))
-print(next(gen))
-print(next(gen))
-print(next(gen))
-print(next(gen))
-print(next(gen))
-print(next(gen))
+for i in gen_obj:
+#     print(i)

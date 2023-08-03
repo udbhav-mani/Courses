@@ -1,7 +1,9 @@
 def count_to_two():
     i = 1
     while i <= 100:
+        print("Before Yield")
         yield i
+        print("After Yield")
         i += 1
 
 
@@ -15,9 +17,10 @@ def count_to_two():
 gen_obj = count_to_two()
 
 
-for i in gen_obj:
-    print(i)
+# for i in gen_obj:
+#     print(i)
 
+print(next(gen_obj))
 print(next(gen_obj))
 
 
