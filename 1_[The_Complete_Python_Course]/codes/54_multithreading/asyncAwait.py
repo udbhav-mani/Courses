@@ -1,8 +1,10 @@
+
 from collections import deque
+from types import coroutine
 
 friends = deque(("Rolf", "Jose", "Charlie", "Jen", "Anna"))
 
-
+@coroutine
 def friend_upper():
     while friends:
         friend = friends.popleft().upper()
@@ -12,20 +14,8 @@ def friend_upper():
         print(f"{greeting}, {friend}")
 
 
-def greet(g):
-    print("In first function, before priming")
-    g.send(None)
-    print("In first function, after priming")
-    while True:
-        print("In first function, before yield")
-        greeting = yield
-        print("In first function, after yield")
-        g.send(greeting)
-
-
-# another way to do this
-# def greet(g):
-#     yield from g
+async def greet(g):
+    await g
 
 
 greeter = greet(friend_upper())

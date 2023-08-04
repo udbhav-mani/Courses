@@ -1,2 +1,2 @@
-
-# g.send("hi")
+def greet(g):
+#     yield from g
