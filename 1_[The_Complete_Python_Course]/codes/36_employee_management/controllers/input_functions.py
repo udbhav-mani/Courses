@@ -20,13 +20,7 @@ def add_emp_input():
 def search_emp_input():
     user_input = input("Which employee do you want to search for ? ")
     search_emp_obj = SearchEmployee()
-    index = search_emp_obj.search_emp(user_input)
-    if index != -1:
-        print(f"{user_input.title()} is an employee of the organization of WatchGuard")
-    else:
-        print(
-            f"{user_input.title()} is not an employee of the organization of WatchGuard"
-        )
+    search_emp_obj.search_emp(user_input)
 
 
 def view_emp_input():

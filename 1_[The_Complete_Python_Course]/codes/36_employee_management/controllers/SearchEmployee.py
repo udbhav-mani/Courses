@@ -1,5 +1,4 @@
-import json
-from Database import Database
+from utils.Database import Database
 from Employee import Employee
 
 
@@ -7,12 +6,11 @@ class SearchEmployee(Employee):
     def __init__(self):
         pass
 
-    def search_emp(self, name):
+    @staticmethod
+    def search_emp(name):
         db_object = Database()
-        data = db_object.fetch_data()
-
-        for index, employee in enumerate(data["employee"]):
-            if employee["name"] == name:
-                return index
+        length = len(db_object.search_data(emp_name=name))
+        if length > 0:
+            print(f"{name} is an employee of WatchGuard!")
         else:
-            return -1
+            print(f"{name} is not an employee of WatchGuard!")

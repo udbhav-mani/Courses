@@ -1,6 +1,5 @@
-import json
 from Employee import Employee
-from Database import Database
+from utils.Database import Database
 
 
 class AddEmployee(Employee):
@@ -13,6 +12,5 @@ class AddEmployee(Employee):
         }
 
         database = Database()
-        data = database.fetch_data()
-        data["employee"].append(emp)
-        database.update_database(data)
+        data = database.add_data(emp)
+        print("Employee added succesfully !! ")
