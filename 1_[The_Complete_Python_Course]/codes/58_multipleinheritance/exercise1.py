@@ -16,7 +16,6 @@ class Promotable:
         cls.rate += increase
 
 
-# Do NOT change the code below:
 class Employee(Salary, Promotable):
     def __init__(self, rate: float):
         # super().__init__(self)
