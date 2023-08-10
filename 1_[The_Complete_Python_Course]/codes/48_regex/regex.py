@@ -4,6 +4,7 @@
 import re
 
 validator = "[a-z]+@([a-z]+\.com)"
+# validator = "[a-z]+@([a-z]+\.com)"
 
 emails = "abc@gmail.com fgh@gmail.com vyg@gmail.com"
 matches = re.findall(validator, emails)
