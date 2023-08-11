@@ -9,8 +9,8 @@ class SearchEmployee(Employee):
     @staticmethod
     def search_emp(name):
         db_object = Database()
-        length = len(db_object.search_data(emp_name=name))
+        length = len(db_object.search_data(emp_name=name.title()))
         if length > 0:
-            print(f"{name} is an employee of WatchGuard!")
+            print(f"{name.title()} is an employee of WatchGuard!")
         else:
             print(f"{name} is not an employee of WatchGuard!")

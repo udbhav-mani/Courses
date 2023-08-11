@@ -32,6 +32,11 @@ def menu():
             print("\nInvalid Input, Please choose between (1-6)! ")
         else:
             user_choice = input("Want to do something else? (y/n) ")
+            while user_choice != "y":
+                if user_choice == "n":
+                    break
+                else:
+                    user_choice = input("Wrong Input! Please try again! (y/n) ")
             if user_choice == "n":
                 print("Thank You ! Have a nice day :) ")
                 break

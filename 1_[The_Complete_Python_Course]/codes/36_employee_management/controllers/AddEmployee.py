@@ -12,5 +12,6 @@ class AddEmployee(Employee):
         }
 
         database = Database()
-        data = database.add_data(emp)
-        print("Employee added succesfully !! ")
+        response = database.add_data(emp)
+        return response
+        # print("Employee added succesfully !! ")

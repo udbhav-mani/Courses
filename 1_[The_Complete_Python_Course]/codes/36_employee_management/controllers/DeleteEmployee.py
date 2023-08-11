@@ -9,5 +9,5 @@ class DeleteEmployee(Employee):
     @staticmethod
     def delete_employee(emp_name):
         db_object = Database()
-        data = db_object.delete_data(emp_name)
-        print(f"{emp_name} deleted successfully!")
+        response = db_object.delete_data(emp_name)
+        print(response)

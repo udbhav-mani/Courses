@@ -10,54 +10,72 @@ class Database:
     @staticmethod
     def is_valid_login(username, password):
         with DBconnect() as cursor:
-            cursor.execute("SELECT password,role FROM login where username = ?", (username,))
+            cursor.execute("SELECT password FROM login where username = ?", (username,))
             output = cursor.fetchall()
             if len(output):
-                db_pass, role = output[0]
+                db_pass = output[0]
             else:
                 return False
 
         encrypt_obj = Encrypt()
-        if encrypt_obj.check_password(password, db_pass):
-            return True, role
+        if encrypt_obj.check_password(password, db_pass[0]):
+            return True
         else:
-            return False, None
+            return False
+
+    @staticmethod
+    def get_role(username):
+        with DBconnect() as cursor:
+            cursor.execute("SELECT role from login where username = ?", (username,))
+            emp_role = [{"emp_role": line[0]} for line in cursor.fetchall()]
+
+            return emp_role[0]['emp_role']
 
     @staticmethod
     def add_data(emp):
-        with DBconnect() as cursor:
-            cursor.execute("INSERT INTO employee (id,name,department,email) VALUES (?,?,?,?)",
-                           (emp['id'], emp['name'], emp['department'], emp['email']))
+        try:
+            with DBconnect() as cursor:
+                cursor.execute("INSERT INTO employee (id,name,department,email) VALUES (?,?,?,?)",
+                               (emp['id'], emp['name'], emp['department'], emp['email']))
+                return "success"
+        except:
+            return "fail"
 
     @staticmethod
     def fetch_data():
         with DBconnect() as cursor:
             cursor.execute("SELECT * from employee")
-            emp = [{"id": line[0], "name": line[1], "email": line[2], "department": line[3]}
+            emp = [{"id": line[0], "name": line[1], "email": line[3], "department": line[2]}
                    for line in
                    cursor.fetchall()]
         return emp
 
     @staticmethod
     def delete_data(emp_name):
-        with DBconnect() as cursor:
-            cursor.execute("DELETE FROM employee where name = ?", (emp_name,))
+        if len(Database.search_data(emp_name.title())) == 0:
+            return f"No employee named {emp_name}."
+        else:
+            with DBconnect() as cursor:
+                cursor.execute("DELETE from employee where name = ?", (emp_name.title(),))
+                return f"{emp_name} deleted successfully!"
 
     @staticmethod
     def search_data(emp_name):
         with DBconnect() as cursor:
             cursor.execute("SELECT * from employee where name = ?", (emp_name,))
-            emp = [line for line in cursor.fetchall()]
+            emp = [{"id": line[0], "name": line[1], "email": line[3], "department": line[2]}
+                   for line in cursor.fetchall()]
         return emp
 
     @staticmethod
     def update_database(emp_data):
         with DBconnect() as cursor:
-            cursor.execute("UPDATE employee SET id = ?, email = ?, department = ? WHERE condition = ",
-                           (emp_data["id"], emp_data["email"], emp_data["department"]))
+            cursor.execute("UPDATE employee SET id = ?, email = ?, department = ? WHERE name = ?",
+                           (emp_data["id"], emp_data["email"], emp_data["department"], emp_data["name"]))
 
 
 if __name__ == "__main__":
     db_object = Database()
     # print(db_object.is_valid_login("Ram", "pass123"))
+    # db_object.get_role("Ram")
     db_object.fetch_data()

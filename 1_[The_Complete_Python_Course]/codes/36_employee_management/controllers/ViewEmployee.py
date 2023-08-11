@@ -19,3 +19,11 @@ class ViewEmployee(Employee):
             print(f"Name : {emp['name']}")
             print(f"Department : {emp['department']}")
             print(f"Email : {emp['email']}")
+
+    @staticmethod
+    def view_emp_names():
+        database = Database()
+        contents = database.fetch_data()
+
+        for i, emp in enumerate(contents, start=1):
+            print(f"Employee {i} Name: {emp['name']} ")
