@@ -7,7 +7,7 @@ def greet():
 
 
 root = tk.Tk()
-root.title('Greet with python')
+root.title("Greet with python")
 name = tk.StringVar()
 name_label = ttk.Label(root, text="Name: ")
 name_label.pack(side="left", fill="both", padx=(10, 10))
