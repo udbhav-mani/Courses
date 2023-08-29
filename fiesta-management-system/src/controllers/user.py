@@ -1,4 +1,5 @@
 from src.controllers.account import Account
+from src.controllers.criteria import Criteria
 from src.controllers.feedback import Feedback
 from src.controllers.menu import Menu
 from src.controllers.orders import Orders
@@ -6,7 +7,7 @@ from src.models.database import Database
 from src.utils import queries
 
 
-class User(Menu, Orders, Account, Feedback):
+class User(Menu, Orders, Account, Feedback, Criteria):
     def __init__(self, user_name, user_id=None, grp_id=None, role=None):
         self.user_name = user_name
         self.user_id = user_id
@@ -29,7 +30,7 @@ class User(Menu, Orders, Account, Feedback):
     def validate_user(self, user_id):
         db = Database()
         response = db.get_item(queries.VALIDATE_USER, (user_id, self.grp_id))
-        if len(response) > 0:
+        if response is not None:
             return True
         else:
             return False

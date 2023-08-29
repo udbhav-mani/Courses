@@ -7,6 +7,7 @@ Please choose from the options below -
 2) Place Order
 3) View Balance
 4) Give Feedback
+5) Exit
 """
 ADMIN_CHOICES = """
 Please choose from the options below -
@@ -15,6 +16,7 @@ Please choose from the options below -
 3) Set Feedback Criteria
 4) View Feedback
 5) View Menu
+6) Exit
 """
 F_EMP_CHOICES = """
 Please choose from the options below -
@@ -23,6 +25,7 @@ Please choose from the options below -
 3) Pending Menus
 4) View Menu
 5) Topup Card
+6) Exit
 """
 PROPOSE_MENU_TEXT = """Please enter the item you want to add to menu - """
 UPDATE_MENU_TEXT = """

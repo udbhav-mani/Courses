@@ -3,18 +3,16 @@ import mysql.connector
 from dotenv import load_dotenv
 
 load_dotenv()
-connection = mysql.connector.connect(
-    host=os.getenv("DB_HOST"),
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD"),
-    database=os.getenv("DB"),
-)
-# print("Connection established")
 
 
 class Database:
     def __init__(self):
-        self.connection = connection
+        self.connection = mysql.connector.connect(
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB"),
+        )
         self.cursor = self.connection.cursor()
 
     def add_item(self, query, data):
