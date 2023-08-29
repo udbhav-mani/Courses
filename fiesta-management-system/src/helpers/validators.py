@@ -31,15 +31,18 @@ class Validators:
 
     @staticmethod
     def validate_yesno(inp):
+        """validates input according to  regex = [yn]"""
         validator = "[yn]"
         return Validators.validations(context=inp, validator=validator)
 
     @staticmethod
     def validate_rating(inp):
+        """validates rating according to  regex = [1-5]"""
         validator = "[1-5]"
         return Validators.validations(context=inp, validator=validator)
 
     @staticmethod
     def validate_date(date):
+        """validates date according to  regex = [0-9]{4}[-][0-9]{2}[-][0-9]{2}"""
         validator = "[0-9]{4}[-][0-9]{2}[-][0-9]{2}"
         return Validators.validations(context=date, validator=validator)
