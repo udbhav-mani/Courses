@@ -1,24 +1,20 @@
 import os
-
 import mysql.connector
 from dotenv import load_dotenv
-from pathlib import Path
 
-dotenv_path = Path("src/utils/.env")
-
-load_dotenv(dotenv_path=dotenv_path)
-HOST = os.getenv("HOST")
-print(HOST)
+load_dotenv()
+connection = mysql.connector.connect(
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB"),
+)
+# print("Connection established")
 
 
 class Database:
     def __init__(self):
-        self.connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="Password3#",
-            database="fiesta_management_system",
-        )
+        self.connection = connection
         self.cursor = self.connection.cursor()
 
     def add_item(self, query, data):
