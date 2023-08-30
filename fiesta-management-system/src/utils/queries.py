@@ -40,6 +40,8 @@ VIEW_BALANCE = """Select balance from user_balance where user_id = %s"""
 VALIDATE_USER = """select * from user_balance where user_id=%s and grp_id=%s"""
 STORE_ORDER = """insert into orders(user_id, amount, created_by) values(%s,%s,%s)"""
 CHECK_MENU_STATUS = """select id from menu where `status` = %s and grp_id = %s"""
+
+
 CHECK_REJECTED_MENU = """select m.id, c.comments from menu as m
 inner join menu_comments as c
 on m.id = c.menu_id
@@ -73,3 +75,4 @@ on g.menu_id = m.id
 where f.user_id = %s"""
 CHECK_ORDER = """select created_at from orders where user_id = %s order by created_at desc;
 """
+MENU_ACCEPTED = "\n\n!!! Your menu has been accepted, Please publish it!!!"

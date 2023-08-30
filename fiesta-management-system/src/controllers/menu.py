@@ -1,13 +1,13 @@
 from prettytable import PrettyTable
-from rich.console import Console
-from rich.table import Table
 
+from src.helpers.decorators import restrict_access
 from src.helpers.exceptions import NoMenuFoundError
 from src.models.database import Database
 from src.utils import queries
 
 
 class Menu:
+    @restrict_access(["admin", "f_emp", "emp"])
     def view_accepted_menu(self):
         db = Database()
         data_tuple = (self.grp_id,)
@@ -84,13 +84,13 @@ class Menu:
         except:
             raise NoMenuFoundError
         else:
-            t = PrettyTable(["Item number", "Item"])
-            t.title = f"Menu"
+            table = PrettyTable(["Item number", "Item"])
+            table.title = f"Menu ({date})"
             items = [tup[0] for tup in data]
             for index, item in enumerate(items, start=1):
-                t.add_row([f"{index}", f"{item}"])
+                table.add_row([f"{index}", f"{item}"])
 
-            print(t)
+            print(f"\n{table}\n")
 
     @staticmethod
     def accept_menu(menu_id):

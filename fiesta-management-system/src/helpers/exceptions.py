@@ -4,3 +4,7 @@ class NoSuchUserError(LookupError):
 
 class NoMenuFoundError(Exception):
     pass
+
+
+class AccessDeniedException(Exception):
+    pass

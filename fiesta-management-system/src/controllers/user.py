@@ -35,14 +35,6 @@ class User(Menu, Orders, Account, Feedback, Criteria):
         else:
             return False
 
-    def __str__(self):
-        return f"""
-                    user_name - {self.user_name}
-                    user_id - {self.user_id}
-                    group - {self.grp_id}
-                    role - {self.role}
-                """
-
 
 if __name__ == "__main__":
     user = User("umani")

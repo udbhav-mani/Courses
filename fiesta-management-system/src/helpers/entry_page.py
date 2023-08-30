@@ -5,7 +5,11 @@ import maskpass
 from prettytable import PrettyTable
 from src.controllers.login import Login
 from src.controllers.user import User
-from src.helpers.exceptions import NoSuchUserError, NoMenuFoundError
+from src.helpers.exceptions import (
+    NoSuchUserError,
+    NoMenuFoundError,
+    AccessDeniedException,
+)
 from src.helpers.validators import Validators
 from src.models.database import Database
 from src.utils import prompts, queries
@@ -17,10 +21,11 @@ class ChoiceDisplayer:
         self.helper = None
 
     def entry(self):
-        print("Welcome to Fiesta Management system.")
+        print(prompts.HEADER)
         self.login_view()
 
     def login_view(self):
+        print("Hello, Please login with your credentials!! ")
         user_name = input("Enter user name - ")
         password = maskpass.advpass(prompt="Enter password - ")
 
@@ -40,12 +45,13 @@ class ChoiceDisplayer:
                 self.display_choices()
             else:
                 print("Login Failed!! Please input valid credentials!!")
+                self.login_view()
 
     def admin_view(self):
         os.system("cls")
         is_not_published = self.user.check_menu_status("not published")
         if is_not_published:
-            print("\n\n!!! Your menu has been accepted, Please publish it!!!")
+            print(queries.MENU_ACCEPTED)
 
         is_rejected_response = self.helper.check_rejected_menu()
         if is_rejected_response is not None:
@@ -72,11 +78,15 @@ class ChoiceDisplayer:
                     items_dict[index] = tup[0]
 
                 item_number = int(input("Enter the item number you want to change - "))
-                new_item = input("Enter the new item name - ")
+                while item_number not in range(1, len(items_dict) + 1):
+                    item_number = int(input("Please enter valid item number - "))
+
+                old_item = items_dict.get(item_number)
+                new_item = GetInput.get_input("Enter the new item name - ")
 
                 self.user.update_menu(
                     _menu_id,
-                    items_dict[item_number],
+                    old_item,
                     new_item,
                 )
                 print("Menu updated succesfully ! ")
@@ -94,7 +104,10 @@ class ChoiceDisplayer:
             elif user_choice == "4":
                 self.helper.view_fdb()
             elif user_choice == "5":
-                self.user.view_accepted_menu()
+                try:
+                    self.user.view_accepted_menu()
+                except AccessDeniedException as e:
+                    print(e)
             elif user_choice == "6":
                 print("Thank you, Have a nice day! :) ")
                 break
@@ -123,7 +136,11 @@ class ChoiceDisplayer:
             elif user_choice == "3":
                 self.helper.accept_menu()
             elif user_choice == "4":
-                self.user.view_accepted_menu()
+                try:
+                    self.user.view_accepted_menu()
+                except AccessDeniedException as e:
+                    print(e)
+
             elif user_choice == "5":
                 self.helper.topup_card()
             elif user_choice == "6":
@@ -141,11 +158,13 @@ class ChoiceDisplayer:
                 break
 
     def emp_view(self):
-        print(prompts.HEADER)
         while True:
             user_choice = input(prompts.EMP_CHOICES)
             if user_choice == "1":
-                self.user.view_accepted_menu()
+                try:
+                    self.user.view_accepted_menu()
+                except AccessDeniedException as e:
+                    print(e)
             elif user_choice == "2":
                 self.user.place_order()
             elif user_choice == "3":
@@ -179,8 +198,10 @@ class ChoiceDisplayer:
         while not (user_input != "1" or user_input != "2"):
             user_input = input("\nPlease choose between 1 or 2 - ")
         if user_input == "1":
+            os.system("cls")
             self.admin_view()
         elif user_input == "2":
+            os.system("cls")
             self.emp_view()
         else:
             print("\n\nPlease choose between 1 or 2 ")
