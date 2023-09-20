@@ -2,7 +2,11 @@ import os
 import mysql.connector
 from dotenv import load_dotenv
 
+from src.helpers.exceptions import DbException
+
 load_dotenv()
+
+
 
 
 class Database:
@@ -16,29 +20,49 @@ class Database:
         self.cursor = self.connection.cursor()
 
     def add_item(self, query, data):
-        self.cursor.execute(query, data)
-        _id = self.cursor.lastrowid
-        self.connection.commit()
-        return _id
+        try:
+            self.cursor.execute(query, data)
+            _id = self.cursor.lastrowid
+            self.connection.commit()
+        except BaseException:
+            raise DbException()
+        else:
+            return _id
 
     def add_items(self, query, data):
-        self.cursor.executemany(query, data)
-        _id = self.cursor.lastrowid
-        self.connection.commit()
-        return _id
+        try:
+            self.cursor.executemany(query, data)
+            _id = self.cursor.lastrowid
+            self.connection.commit()
+        except BaseException:
+            raise DbException
+        else:
+            return _id
 
     def get_item(self, query, data=None):
-        self.cursor.execute(query, data)
-        response = self.cursor.fetchone()
-        return response
+        try:
+            self.cursor.execute(query, data)
+            response = self.cursor.fetchone()
+        except BaseException:
+            raise DbException
+        else:
+            return response
 
     def get_items(self, query, data=None):
-        self.cursor.execute(query, data)
-        response = self.cursor.fetchall()
-        return response
+        try:
+            self.cursor.execute(query, data)
+            response = self.cursor.fetchall()
+        except BaseException:
+            raise DbException
+        else:
+            return response
 
     def update_item(self, query, data):
-        self.cursor.execute(query, data)
-        _id = self.cursor.lastrowid
-        self.connection.commit()
-        return _id
+        try:
+            self.cursor.execute(query, data)
+            _id = self.cursor.lastrowid
+            self.connection.commit()
+        except BaseException:
+            raise DbException
+        else:
+            return _id

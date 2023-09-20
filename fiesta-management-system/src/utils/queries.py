@@ -76,3 +76,4 @@ where f.user_id = %s"""
 CHECK_ORDER = """select created_at from orders where user_id = %s order by created_at desc;
 """
 MENU_ACCEPTED = "\n\n!!! Your menu has been accepted, Please publish it!!!"
+TEMP = None

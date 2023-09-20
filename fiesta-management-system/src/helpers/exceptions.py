@@ -8,3 +8,7 @@ class NoMenuFoundError(Exception):
 
 class AccessDeniedException(Exception):
     pass
+
+
+class DbException(Exception):
+    pass

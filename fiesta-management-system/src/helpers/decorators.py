@@ -13,5 +13,4 @@ def restrict_access(params):
                 )
 
         return access_specifier
-
     return my_decorator

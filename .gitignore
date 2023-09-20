@@ -2,3 +2,7 @@
 1_[The_Complete_Python_Course]/codes/tempcoderunnerfile.py
 fiesta-management-system/.env
 .env
+__pycache__
+.venv
+.coverage
+.db

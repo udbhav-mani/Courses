@@ -2,27 +2,22 @@ import hashlib
 
 from src.helpers.exceptions import NoSuchUserError
 from src.models.database import Database
-from src.utils import queries
+from src.utils import config
 
 
 class Login:
-    def __init__(self, user_name, password):
-        self.user_name = user_name
-        self.password = password
-
-    def authenticate_credentials(self):
+    def authenticate_credentials(self, user_name, password):
         try:
-            if self.authenticate_user():
+            if self.__authenticate_user(user_name, password):
                 return True
-            else:
-                return False
+            return False
         except NoSuchUserError:
             raise NoSuchUserError
 
-    def authenticate_user(self):
-        db = Database()
-        db_hashed_password = db.get_item(queries.GET_HASHED_PASSWORD, (self.user_name,))
-        hashed_password = self.get_hash()
+    @staticmethod
+    def __authenticate_user(user_name, password):
+        db_hashed_password = Login.__get_password_from_db(user_name)
+        hashed_password = Login.__get_hash(password)
 
         if db_hashed_password is None:
             raise NoSuchUserError
@@ -31,12 +26,14 @@ class Login:
         else:
             return False
 
-    def get_hash(self):
-        password = self.password.encode()
+    @staticmethod
+    def __get_password_from_db(user_name):
+        db = Database()
+        db_hashed_password = db.get_item(config.queries["GET_HASHED_PASSWORD"], (user_name,))
+        return db_hashed_password
+
+    @staticmethod
+    def __get_hash(password):
+        password = password.encode()
         pass_hash = hashlib.sha256(password).hexdigest()
         return pass_hash
-
-
-if __name__ == "__main__":
-    login_obj = Login("tgoyal", "Tusharpass1!")
-    print(login_obj.get_user_details())
