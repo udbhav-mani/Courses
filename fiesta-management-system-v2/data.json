@@ -41,8 +41,5 @@
         "PROPOSE_MENU_TEXT": "Please enter the item you want to add to the menu - \n",
         "UPDATE_MENU_TEXT": "Please choose from the options below -\n 1) Discard Menu\n 2) Update Menu\n",
         "VIEW_ADMIN_MENU": "Please choose from the options below -\n 1) Login as admin\n 2) Login as employee\n"
-    },
-    "errors":{
-        
     }
 }

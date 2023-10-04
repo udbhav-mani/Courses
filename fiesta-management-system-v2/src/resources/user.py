@@ -37,7 +37,7 @@ class UserLogin(MethodView):
     def get(self):
         grp_id = get_jwt().get("grp_id")
         user_id = request.args.get("user_id")
-        if not Validators.validate_id(user_id):
+        if user_id is not None and not Validators.validate_id(user_id):
             return error(code=400, message="Please give appropriate user_id")
 
         user = User()
