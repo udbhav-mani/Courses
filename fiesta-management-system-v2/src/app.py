@@ -22,7 +22,6 @@ from utils import config
 with open(
     r"C:\Users\umani\Desktop\Courses\fiesta-management-system-v2\data.json", "r"
 ) as file:
-    print("File imported")
     data = json.load(file)
     config.queries = data["queries"]
 
