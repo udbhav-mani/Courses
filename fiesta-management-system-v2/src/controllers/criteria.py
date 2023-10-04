@@ -26,6 +26,7 @@ class Criteria:
     @staticmethod
     def get_fdb_criteria():
         db = Database()
+        # print(config.queries["GET_FDB_CRITERIAS"])
         response = db.get_items(config.queries["GET_FDB_CRITERIAS"], data=None)
         criteria = [dict(id=line[0], criteria=line[1]) for line in response]
         return criteria

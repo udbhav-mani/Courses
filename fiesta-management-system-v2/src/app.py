@@ -24,6 +24,7 @@ with open(
 ) as file:
     data = json.load(file)
     config.queries = data["queries"]
+    # print(config.queries)
 
 
 def create_app():
