@@ -5,6 +5,8 @@ from flask_jwt_extended import (
     jwt_required,
 )
 
+from src.helpers.exceptions import error
+
 from flask import request
 from src.controllers.user import User
 from src.helpers.validators import Validators
@@ -19,21 +21,22 @@ class PlaceOrder(MethodView):
     @jwt_required()
     def post(self):
         data = request.get_json()
-        is_validated = Validators.validate_request(OrderSchema, data)
-        if is_validated is not None:
-            return {
-                "error": {"code": 400, "message": is_validated.split("\n")[0]},
-                "status": "failure",
-            }, 400
+        validator = Validators.validate_request(OrderSchema, data)
+        if validator:
+            return error(code=400, message=validator.split("\n")[0])
 
         user = User()
         user.update_balance(amount=-1 * data["amount"], user_id=data["user_id"])
-        order_id = User.store_order(amount=data["amount"], user_id=data["user_id"], created_by=get_jwt().get("sub"))
+        order_id = User.store_order(
+            amount=data["amount"],
+            user_id=data["user_id"],
+            created_by=get_jwt().get("sub"),
+        )
         return {
             "message": "success",
             "amount": data["amount"],
-            "order_id": order_id
-        }
+            "order_id": order_id,
+        }, 201
 
 
 @blp.route("/orders/<int:user_id>")
@@ -48,4 +51,3 @@ class GetOrder(MethodView):
         else:
             data = user.check_order(user_id=user_id, date=date)
             return data
-

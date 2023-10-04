@@ -9,7 +9,9 @@ from src.utils import config
 class TestAccount(TestCase):
     def setUp(self):
         self.obj = Account()
-        with open(r"C:\Users\umani\Desktop\clone\data.json", "r") as file:
+        with open(
+            r"C:\Users\umani\Desktop\Courses\fiesta-management-system\data.json", "r"
+        ) as file:
             data = json.load(file)
             config.prompts = data["menu_choices"]
             config.queries = data["queries"]

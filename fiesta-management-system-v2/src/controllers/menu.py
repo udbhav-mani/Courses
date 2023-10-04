@@ -3,11 +3,10 @@ from src.utils import config
 
 
 class Menu:
-
     @staticmethod
     def get_menu_from_group(grp_id):
         db = Database()
-        SET_FEEDBACK_CRITERIA_QUERY1 = 'select menu_id from `groups` where id = %s'
+        SET_FEEDBACK_CRITERIA_QUERY1 = "select menu_id from `groups` where id = %s"
         response = db.get_item(SET_FEEDBACK_CRITERIA_QUERY1, (grp_id,))
         _menu_id = response[0]
         return _menu_id
@@ -21,7 +20,9 @@ class Menu:
 
     def propose_menu(self, data, date, name, grp_id):
         db = Database()
-        query_add_menu = "insert into menu(date,status,created_by, grp_id) values(%s,%s,%s,%s);"
+        query_add_menu = (
+            "insert into menu(date,status,created_by, grp_id) values(%s,%s,%s,%s);"
+        )
         query_propose_items = "insert into items(menu_id, items) values(%s,%s)"
         data_tuple = (date, "pending", name, grp_id)
         _id = db.add_item(query_add_menu, data_tuple)
@@ -43,7 +44,6 @@ class Menu:
 
     def get_menu_by_status(self, grp_id, status):
         db = Database()
-        print(grp_id, status)
         query = """select i.items, m.date, m.id from menu as m inner join items as i on m.id = i.menu_id where m.status=%s and m.grp_id=%s;"""
         items = db.get_items(query, (status, grp_id))
         return items
@@ -52,7 +52,9 @@ class Menu:
         db = Database()
         self.update_menu_status("published", menu_id)
 
-        QUERY_APPROVE_MENU = "insert into approved_menu(menu_id,menu_date) values(%s,%s)"
+        QUERY_APPROVE_MENU = (
+            "insert into approved_menu(menu_id,menu_date) values(%s,%s)"
+        )
         data_tuple = (menu_id, menu_date)
         _id = db.add_item(QUERY_APPROVE_MENU, data_tuple)
 
@@ -62,7 +64,10 @@ class Menu:
 
     def update_menu_status(self, status, menu_id):
         db = Database()
-        data_tuple = (status, menu_id,)
+        data_tuple = (
+            status,
+            menu_id,
+        )
         query = "update menu set status = %s where id = %s"
         db.update_item(query, data_tuple)
         return "success"

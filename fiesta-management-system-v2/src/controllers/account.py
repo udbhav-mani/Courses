@@ -13,7 +13,8 @@ class Account:
 
         db = Database()
         balance = db.get_item(config.queries["VIEW_BALANCE"], (user_id,))
-        return balance[0]
+        if balance:
+            return balance[0]
 
     @staticmethod
     def update_balance(amount, grp_id=None, user_id=None):

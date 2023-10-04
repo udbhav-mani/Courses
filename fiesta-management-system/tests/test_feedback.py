@@ -8,7 +8,9 @@ from src.utils import config
 class TestFeedback(TestCase):
     def setUp(self):
         self.obj = User("dummy")
-        with open(r"C:\Users\umani\Desktop\clone\data.json", "r") as file:
+        with open(
+            r"C:\Users\umani\Desktop\Courses\fiesta-management-system\data.json", "r"
+        ) as file:
             data = json.load(file)
             config.prompts = data["menu_choices"]
             config.queries = data["queries"]
@@ -28,19 +30,22 @@ class TestFeedback(TestCase):
 
     @mock.patch("src.models.database.Database.get_items")
     def test_get_menu_fdb_criterias(self, mocked_get_items):
-        mocked_get_items.return_value = [(1, 1, "taste",), (1, 2, "quality",)]
+        mocked_get_items.return_value = [
+            (
+                1,
+                1,
+                "taste",
+            ),
+            (
+                1,
+                2,
+                "quality",
+            ),
+        ]
         response = self.obj.get_menu_fdb_criterias()
         fdb = [
-            {
-                "menu_id": 1,
-                "cr_id": 1,
-                "criteria": "taste"
-            },
-            {
-                "menu_id": 1,
-                "cr_id": 2,
-                "criteria": "quality"
-            }
+            {"menu_id": 1, "cr_id": 1, "criteria": "taste"},
+            {"menu_id": 1, "cr_id": 2, "criteria": "quality"},
         ]
 
         self.assertEqual(response, fdb)
@@ -56,4 +61,3 @@ class TestFeedback(TestCase):
         mocked_get_item.return_value = []
         response = self.obj.check_user_feedback()
         self.assertEqual(response, True)
-

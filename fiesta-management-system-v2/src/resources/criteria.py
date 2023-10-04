@@ -1,13 +1,16 @@
 from flask_smorest import Blueprint
 from flask.views import MethodView
 from flask_jwt_extended import (
-    jwt_required, get_jwt,
+    jwt_required,
+    get_jwt,
 )
 from flask import request, abort
 
 from src.controllers.criteria import Criteria
 from src.helpers.validators import Validators
 from src.schemas import CriteriaSchema
+from src.helpers.exceptions import error
+
 
 blp = Blueprint("Criteria", "Criteria", description="Operations on Criterias")
 
@@ -18,7 +21,7 @@ class GetCriteria(MethodView):
     def get(self):
         role = get_jwt().get("role")
         if role not in ["admin", "emp"]:
-            abort(403, message="You are not authorised to do this.")
+            return error(code=403, message="You are not authorised to do this.")
         criteria = Criteria()
         response = criteria.get_fdb_criteria()
         return response
@@ -27,16 +30,13 @@ class GetCriteria(MethodView):
     def post(self):
         role = get_jwt().get("role")
         if role not in ["admin"]:
-            abort(403, message="You are not authorised to do this.")
+            return error(code=403, message="You are not authorised to do this.")
 
         data = request.get_json()
-        is_validated = Validators.validate_request(CriteriaSchema, data)
-        if is_validated is not None:
-            return {
-                "error": {"code": 400, "message": is_validated.split("\n")[0]},
-                "status": "failure",
-            }, 400
+        validator = Validators.validate_request(CriteriaSchema, data)
+        if validator:
+            return error(code=400, message=validator.split("\n")[0])
 
         criteria = Criteria()
         criteria.add_new_criteria(data["criteria"])
-        return dict(message="success"), 200
+        return dict(message="Criteria added successfully", status="success"), 200

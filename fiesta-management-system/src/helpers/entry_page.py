@@ -20,13 +20,10 @@ class ChoiceDisplayer:
     Class containing all the required methods,
     to display the console menus
     """
+
     def __init__(self, user=None):
         self.user = user
         self.helper = None
-        with open(r"C:\Users\umani\Desktop\clone\data.json", "r") as file:
-            data = json.load(file)
-            config.prompts = data["menu_choices"]
-            config.queries = data["queries"]
 
     def entry(self):
         """
@@ -217,7 +214,7 @@ class ChoiceDisplayer:
     def __notify_not_published_menu(self):
         is_not_published = self.user.check_menu_status("not published")
         if is_not_published:
-            print(config.prompts["MENU_ACCEPTED"])
+            print("Your menu has been accepted, Please publish!!")
 
     def __notify_rejected_menu(self):
         is_rejected_response = self.helper.helper_check_rejected_menu()

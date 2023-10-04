@@ -1,3 +1,6 @@
+from src.utils.config import error_response
+
+
 class NoSuchUserError(LookupError):
     pass
 
@@ -12,3 +15,9 @@ class AccessDeniedException(Exception):
 
 class DbException(Exception):
     pass
+
+
+def error(code=None, message=None):
+    error_response["error"]["code"] = code
+    error_response["error"]["message"] = message
+    return error_response, code

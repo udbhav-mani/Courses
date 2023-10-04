@@ -8,7 +8,7 @@ from src.utils import config
 class TestMenu(TestCase):
     def setUp(self):
         self.obj = User("dummy")
-        with open(r"C:\Users\umani\Desktop\clone\data.json", "r") as file:
+        with open("data.json", "r") as file:
             data = json.load(file)
             config.prompts = data["menu_choices"]
             config.queries = data["queries"]
@@ -58,4 +58,3 @@ class TestMenu(TestCase):
         mocked_update_items.return_value = []
         response = self.obj.update_menu(1, "", "")
         self.assertEqual(response, None)
-

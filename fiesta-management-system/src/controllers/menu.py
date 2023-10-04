@@ -1,13 +1,12 @@
 from prettytable import PrettyTable
 
-from src.helpers.decorators import restrict_access
+
 from src.helpers.exceptions import NoMenuFoundError
 from src.models.database import Database
 from src.utils import config
 
 
 class Menu:
-
     def view_accepted_menu(self):
         db = Database()
         data_tuple = (self.grp_id,)
@@ -55,7 +54,9 @@ class Menu:
 
     def check_menu_status(self, status):
         db = Database()
-        response = db.get_item(config.queries["CHECK_MENU_STATUS"], (status, self.grp_id))
+        response = db.get_item(
+            config.queries["CHECK_MENU_STATUS"], (status, self.grp_id)
+        )
         return response
 
     def check_rejected_menu(self):
@@ -86,7 +87,7 @@ class Menu:
     def display_menu(data):
         try:
             date = data[0][1]
-        except NoMenuFoundError:
+        except Exception:
             raise NoMenuFoundError
         else:
             table = PrettyTable(["Item number", "Item"])

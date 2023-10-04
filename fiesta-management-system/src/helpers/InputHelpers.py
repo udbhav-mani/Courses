@@ -22,8 +22,10 @@ class InputHelpers:
         if response == -1:
             print("Low Balance, Contact admin or visit fiesta to Topup Card!")
         else:
-            print(f"Order has been placed Succesfully,"
-                  f"Thank You!!\n Your current balance is - {response} ")
+            print(
+                f"Order has been placed Succesfully,"
+                f"Thank You!!\n Your current balance is - {response} "
+            )
 
     def check_role(self):
         """returns role of user"""
@@ -92,9 +94,7 @@ class InputHelpers:
             rating = GetInput.get_ratings(
                 f"Please give ratings(out of 5) for the criteria [{current_cr}] -> "
             )
-            review = input(
-                f"Please give reviews for the criteria [{current_cr}] - "
-            )
+            review = input(f"Please give reviews for the criteria [{current_cr}] - ")
 
             feedback.append(
                 (
@@ -137,7 +137,9 @@ class InputHelpers:
         """gets input from admin and calls the propose_menu()"""
         menu_items = []
         while True:
-            menu_item = GetInput.get_input(prompts.PROPOSE_MENU_TEXT)
+            menu_item = GetInput.get_input(
+                "Please enter the item you want to add to menu - "
+            )
             menu_items.append(menu_item)
             user_input = GetInput.get_input("Do you wish to add more items ??(y/n) ")
             if user_input == "n":
@@ -222,7 +224,7 @@ class InputHelpers:
                 feedback_dict[feedback[0]].append([feedback[1], feedback[2]])
             first_key = list(feedback_dict.keys())[0]
             criteria_fdb_length = len(feedback_dict.get(first_key))
-            for i in range(0, criteria_fdb_length):
+            for i in range(0, criteria_fdb_length - 1):
                 table = PrettyTable(["Criteria", "Ratings(out of 5)", "Comments"])
                 table.title = f"Feedback {i + 1}"
                 for key, value in feedback_dict.items():
