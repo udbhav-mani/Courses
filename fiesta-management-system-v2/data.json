@@ -1,8 +1,9 @@
 {
     "queries": {
         "GET_DETAILS": "select a.id, a.user_name, r.role, u.grp_id from authentication as a inner join user_roles as r on (a.id = r.user_id) inner join users as u on (u.user_id = a.id) where user_name = %s",
-        "GET_MENU": "select i.items, m.date, m.id from menu as m inner join items as i on m.id = i.menu_id where m.status = %s and m.grp_id = %s;",
-        "GET_ACCEPTED_MENU": "select i.items, m.date from `groups` as g inner join approved_menu as a on g.menu_id = a.id inner join menu as m on a.menu_id = m.id inner join items as i on m.id = i.menu_id where g.id = %s;",
+        "GET_MENU": "select i.items, m.date, m.id from menu as m inner join items as i on m.id = i.menu_id where m.status = %s and m.grp_id = %s",
+        "GET_ACCEPTED_MENU": "select i.items, m.date from `groups` as g inner join approved_menu as a on g.menu_id = a.id inner join menu as m on a.menu_id = m.id inner join items as i on m.id = i.menu_id where g.id = %s",
+        "GET_USERS": "select user_id, balance from user_balance where grp_id=%s",
         "ACCEPT_MENU": "update menu set status = 5 where id = %s",
         "REJECT_MENU": "update menu set status = 3 where id = %s",
         "GET_HASHED_PASSWORD": "SELECT password from authentication where user_name = %s",
