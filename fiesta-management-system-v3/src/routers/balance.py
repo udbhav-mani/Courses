@@ -1,22 +1,14 @@
 from schemas import UpdateGrpBalanceSchema, UpdateUserBalanceSchema
-from src.helpers.validators import Validators
 from src.helpers.jwt_helper import get_token
-from src.controllers.login import Login
-from src.controllers.user import User
-from src.helpers.exceptions import NoSuchUserError, error
-from datetime import datetime, timedelta
+from src.helpers.exceptions import error
 from fastapi import (
-    Depends,
     HTTPException,
     status,
     APIRouter,
     Request,
-    Response,
-    Form,
     Body,
     Query,
 )
-from fastapi.responses import JSONResponse
 
 from typing import Annotated
 from src.helpers.jwt_helper import get_token
@@ -27,7 +19,7 @@ from src.controllers.user import Account
 router = APIRouter()
 
 
-@router.put("/balance/user")
+@router.put("/balance/user", status_code=status.HTTP_200_OK)
 @validate_body(UpdateUserBalanceSchema)
 @grant_access(roles_allowed=["admin", "f_emp"])
 def put_balance(request: Request, body: Annotated[dict, Body()]):
@@ -40,7 +32,7 @@ def put_balance(request: Request, body: Annotated[dict, Body()]):
     }
 
 
-@router.put("/balance/grp")
+@router.put("/balance/grp", status_code=status.HTTP_200_OK)
 @validate_body(UpdateGrpBalanceSchema)
 @grant_access(roles_allowed=["admin"])
 def put_grp_balance(request: Request, body: Annotated[dict, Body()]):

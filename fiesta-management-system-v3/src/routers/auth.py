@@ -16,7 +16,7 @@ from typing import Annotated
 router = APIRouter()
 
 
-@router.post("/login")
+@router.post("/login", status_code=status.HTTP_204_NO_CONTENT)
 def post(response: Response, body: Annotated[dict, Body()]):
     user_data = body
     instance = Login()

@@ -1,14 +1,10 @@
-import json
 import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from fastapi import FastAPI
-
 from routers import user, auth, balance, criteria, feedback, menu, orders
-from starlette import status
-from utils import config
 
 
 app = FastAPI()

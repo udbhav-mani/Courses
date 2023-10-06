@@ -9,7 +9,6 @@ from datetime import datetime
 import starlette
 
 
-
 from src.controllers.account import Account
 from src.controllers.menu import Menu
 from src.schemas import MenuSchema, UpdateSchema, UpdateItemSchema
@@ -18,6 +17,7 @@ from enum import Enum
 
 router = APIRouter()
 
+
 class Status(str, Enum):
     published = "published"
     pending = "pending"
@@ -25,7 +25,7 @@ class Status(str, Enum):
     rejected = "rejected"
 
 
-@router.get("/menu")
+@router.get("/menu", status_code=status.HTTP_200_OK)
 def get_menu(request: Request, status: Annotated[Status, Query()]):
     grp_id = get_token(request=request).get("grp_id")
     menu = Menu()
@@ -50,7 +50,7 @@ def get_menu(request: Request, status: Annotated[Status, Query()]):
         return dict(menu_id=response[0][2], date=date, items=items)
 
 
-@router.post("/menu")
+@router.post("/menu", status_code=status.HTTP_201_CREATED)
 @grant_access(["admin"])
 @validate_body(MenuSchema)
 def post_menu(request: Request, body: Annotated[dict, Body()]):
@@ -64,7 +64,7 @@ def post_menu(request: Request, body: Annotated[dict, Body()]):
     return dict(message=response)
 
 
-@router.put("/menu")
+@router.put("/menu", status_code=status.HTTP_200_OK)
 @grant_access(["admin", "f_emp"])
 @validate_body(UpdateSchema)
 def put_menu(request: Request, body: Annotated[dict, Body()]):
@@ -93,7 +93,7 @@ def put_menu(request: Request, body: Annotated[dict, Body()]):
         return dict(message=response)
 
 
-@router.patch("/menu/{menu_id}")
+@router.patch("/menu/{menu_id}", status_code=status.HTTP_200_OK)
 @grant_access(roles_allowed=["admin", "f_emp"])
 @validate_body(UpdateItemSchema)
 def patch_menu(

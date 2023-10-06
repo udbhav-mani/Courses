@@ -13,7 +13,7 @@ from typing import Annotated
 router = APIRouter()
 
 
-@router.get("/users")
+@router.get("/users", status_code=status.HTTP_200_OK)
 def get_users(request: Request, user_id: Annotated[int | None, Query()] = None):
     grp_id = get_token(request).get("grp_id")
 

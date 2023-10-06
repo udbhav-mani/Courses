@@ -15,7 +15,7 @@ from fastapi.responses import JSONResponse
 router = APIRouter()
 
 
-@router.get("/feedback/criterias")
+@router.get("/feedback/criterias", status_code=status.HTTP_200_OK)
 def get_fdb_criterias():
     grp_id = get_token().get("grp_id")
     response = User.get_menu_fdb_criterias(grp_id)
@@ -29,7 +29,7 @@ def get_fdb_criterias():
     return response
 
 
-@router.post("/feedback/criterias")
+@router.post("/feedback/criterias", status_code=status.HTTP_201_CREATED)
 @grant_access(["admin"])
 @validate_body(CriteriaSchema)
 def post_fdb_criterias(request: Request, body: Annotated[dict, Body()]):

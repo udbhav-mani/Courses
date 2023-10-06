@@ -1,5 +1,5 @@
 from helpers.jwt_helper import get_token
-from fastapi import APIRouter, Request, Body, Query, Path
+from fastapi import APIRouter, Request, Body, Query, Path, status
 from typing import Annotated
 from src.helpers.decorators import validate_body
 from src.controllers.user import User
@@ -9,7 +9,7 @@ from src.schemas import OrderSchema
 router = APIRouter()
 
 
-@router.post("/orders")
+@router.post("/orders", status_code=status.HTTP_201_CREATED)
 @validate_body(OrderSchema)
 def place_order(request: Request, body: Annotated[dict, Body()]):
     user = User()
@@ -26,7 +26,7 @@ def place_order(request: Request, body: Annotated[dict, Body()]):
     }
 
 
-@router.get("/orders/{user_id}")
+@router.get("/orders/{user_id}", status_code=status.HTTP_200_OK)
 def get_order(
     user_id: Annotated[int, Path()], date: Annotated[str | None, Query()] = None
 ):
