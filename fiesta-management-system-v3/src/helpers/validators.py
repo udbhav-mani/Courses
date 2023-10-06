@@ -26,23 +26,6 @@ class Validators:
         return Validators.validations(context=password, validator=validator)
 
     @staticmethod
-    def validate_input(inp):
-        validator = "[A-Za-z0-9\s]+"
-        return Validators.validations(context=inp, validator=validator)
-
-    @staticmethod
-    def validate_yesno(inp):
-        """validates input according to  regex = [yn]"""
-        validator = "[yn]"
-        return Validators.validations(context=inp, validator=validator)
-
-    @staticmethod
-    def validate_rating(inp):
-        """validates rating according to  regex = [1-5]"""
-        validator = "[1-5]"
-        return Validators.validations(context=inp, validator=validator)
-
-    @staticmethod
     def validate_date(date):
         """validates date according to  regex = [0-9]{4}[-][0-9]{2}[-][0-9]{2}"""
         validator = "[0-9]{4}[-][0-9]{2}[-][0-9]{2}"
@@ -54,4 +37,3 @@ class Validators:
             jsonschema.validate(instance=data, schema=schema)
         except Exception as error:
             return str(error)
-

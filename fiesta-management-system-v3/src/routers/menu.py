@@ -1,6 +1,4 @@
 from helpers.jwt_helper import get_token
-from src.controllers.menu import Menu
-from src.helpers.exceptions import error
 from fastapi import APIRouter, Request, Body, status, Query, Path
 from typing import Annotated
 from src.helpers.decorators import grant_access, validate_body
@@ -16,6 +14,7 @@ from src.helpers.exceptions import error
 from enum import Enum
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 
 class Status(str, Enum):

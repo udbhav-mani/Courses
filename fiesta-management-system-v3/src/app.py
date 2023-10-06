@@ -6,6 +6,16 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from fastapi import FastAPI
 from routers import user, auth, balance, criteria, feedback, menu, orders
 
+import logging
+logging.basicConfig(
+    filename="app.log",
+    filemode="a",
+    format="%(asctime)s,%(msecs)d %(name)s - %(levelname)s - %(message)s",
+    datefmt="%H:%M:%S",
+    level=logging.DEBUG,
+)
+logger = logging.getLogger(__name__)
+
 
 app = FastAPI()
 app.include_router(auth.router)

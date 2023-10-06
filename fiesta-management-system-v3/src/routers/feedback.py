@@ -1,9 +1,8 @@
 from helpers.jwt_helper import get_token
-from src.controllers.criteria import Criteria
 from src.controllers.feedback import Feedback
 from src.controllers.menu import Menu
 from src.controllers.user import User
-from src.schemas import CriteriaSchema, PlainFeedbackSchema
+from src.schemas import PlainFeedbackSchema
 from src.helpers.exceptions import error
 from fastapi import APIRouter, Request, Body, status, Query
 from typing import Annotated

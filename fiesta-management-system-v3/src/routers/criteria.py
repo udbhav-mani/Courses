@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Request, Body, status
 from typing import Annotated
 from src.helpers.decorators import grant_access, validate_body
-from src.helpers.decorators import grant_access, validate_body
 from src.controllers.criteria import Criteria
 from src.schemas import CriteriaSchema
 
