@@ -9,3 +9,7 @@ __pycache__
 fastapivenv
 .idea
 fmsvenv
+todovenv
+proj4
+*.db
+*.ini
