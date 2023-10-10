@@ -25,7 +25,7 @@ def create_access_token(user_data: dict, expires_delta: timedelta | None = None)
 
 def get_token(request: Request):
     try:
-        token = request.cookies.get("access_token")
+        token = request.headers.get("Authorization").split(" ")[1]
         if token is None:
             return None
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

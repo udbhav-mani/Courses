@@ -1,6 +1,6 @@
 import hashlib
 
-from src.helpers.exceptions import NoSuchUserError
+from src.helpers.exceptions import NoSuchUserError, LoginError
 from src.models.database import db
 from src.utils import config
 
@@ -8,11 +8,9 @@ from src.utils import config
 class Login:
     def authenticate_credentials(self, user_name, password):
         try:
-            if self.__authenticate_user(user_name, password):
-                return True
-            return False
-        except NoSuchUserError:
-            return "error"
+            self.__authenticate_user(user_name, password)
+        except LoginError as err:
+            raise LoginError(str(err))
 
     @staticmethod
     def __authenticate_user(user_name, password):
@@ -20,11 +18,11 @@ class Login:
         hashed_password = Login.__get_hash(password)
 
         if db_hashed_password is None:
-            raise NoSuchUserError
+            raise LoginError("No such user found!!")
         elif db_hashed_password[0] == hashed_password:
             return True
         else:
-            return False
+            raise LoginError("Invalid Credentials")
 
     @staticmethod
     def __get_password_from_db(user_name):

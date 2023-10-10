@@ -1,6 +1,10 @@
+import logging
 from src.models.database import Database
 from src.utils import config
-from src.helpers import log
+from src.helpers import log, NoSuchUserError
+
+
+logger = logging.getLogger(__name__)
 
 
 class Account:
@@ -9,18 +13,17 @@ class Account:
     all the manipulations regarding balance of an employee
     """
 
-    @log
+    @log(logger=logger)
     def view_balance(self, user_id=None):
-        if user_id is None:
-            user_id = self.user_id
-
         db = Database()
         balance = db.get_item(config.queries["VIEW_BALANCE"], (user_id,))
         if balance:
             return balance[0]
 
-    @log
+        raise NoSuchUserError("No such user found!")
+
     @staticmethod
+    @log(logger=logger)
     def update_balance(amount, grp_id=None, user_id=None):
         db = Database()
         if user_id is None:

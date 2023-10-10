@@ -1,3 +1,4 @@
+from src.helpers.exceptions import NoSuchUserError
 from src.controllers.account import Account
 from src.controllers.criteria import Criteria
 from src.controllers.feedback import Feedback
@@ -31,5 +32,6 @@ class User(Menu, Orders, Account, Feedback, Criteria):
     def get_users(self, grp_id):
         db = Database()
         response = db.get_items(config.queries["GET_USERS"], (grp_id,))
-        if response is not None:
+        if response:
             return [dict(user_id=item[0], balance=item[1]) for item in response]
+        raise NoSuchUserError("Couldn't get users.")

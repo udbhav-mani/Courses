@@ -1,7 +1,6 @@
 import functools
 from src.helpers import get_logger
 
-logger = get_logger(__name__)
 
 
 def log(fun):

@@ -1,21 +1,31 @@
+import logging
+from src.helpers.exceptions import BadRequestException
 from src.helpers.jwt_helper import get_token
 from fastapi import APIRouter, Request, Body, Query, Path, status
 from typing import Annotated
-from src.helpers import validate_body, grant_access, log
+from src.helpers import validate_body, grant_access, log, handle_errors
 from src.controllers.user import User
 
 from src.schemas import OrderSchema
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
 @router.post("/orders", status_code=status.HTTP_201_CREATED)
 @validate_body(OrderSchema)
 @grant_access
-@log
+@log(logger=logger)
+@handle_errors
 def place_order(request: Request, body: Annotated[dict, Body()]):
     user = User()
-    user.update_balance(amount=-1 * body["amount"], user_id=body["user_id"])
+    user_id = body["user_id"]
+    amount = body["amount"]
+    balance = user.view_balance(user_id=user_id)
+    if amount > balance:
+        raise BadRequestException("Amount is greater than current balance.")
+
+    user.update_balance(amount=-1 * amount, user_id=user_id)
     order_id = User.store_order(
         amount=body["amount"],
         user_id=body["user_id"],
@@ -30,7 +40,7 @@ def place_order(request: Request, body: Annotated[dict, Body()]):
 
 @router.get("/orders/{user_id}", status_code=status.HTTP_200_OK)
 @grant_access
-@log
+@log(logger=logger)
 def get_order(
     request: Request,
     user_id: Annotated[int, Path()],

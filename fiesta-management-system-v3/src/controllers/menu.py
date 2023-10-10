@@ -17,30 +17,19 @@ class Menu:
         data_tuple = (grp_id,)
         response = db.get_items(config.queries["GET_ACCEPTED_MENU"], data_tuple)
         return response
-        # Menu.display_menu(response)
 
     def propose_menu(self, data, date, name, grp_id):
         db = Database()
-        query_add_menu = (
-            "insert into menu(date,status,created_by, grp_id) values(%s,%s,%s,%s);"
-        )
-        query_propose_items = "insert into items(menu_id, items) values(%s,%s)"
         data_tuple = (date, "pending", name, grp_id)
-        _id = db.add_item(query_add_menu, data_tuple)
+        _id = db.add_item(config.queries["ADD_MENU"], data_tuple)
         data_list = [(_id, item) for item in data]
-        db.add_items(query_propose_items, data_list)
-        return "success"
+        db.add_items(config.queries["PROPOSE_MENU_ITEMS"], data_list)
 
     def reject_menu(self, menu_id, comments, username):
-        try:
-            db = Database()
-            self.update_menu_status("rejected", menu_id)
-            data_tuple = (menu_id, comments, username)
-            db.add_item(config.queries["QUERY_ADD_COMMENT"], data_tuple)
-        except Exception as error:
-            return f"error - {error.__str__()}"
-        else:
-            return "success"
+        db = Database()
+        self.update_menu_status("rejected", menu_id)
+        data_tuple = (menu_id, comments, username)
+        db.add_item(config.queries["QUERY_ADD_COMMENT"], data_tuple)
 
     def get_menu_by_status(self, grp_id, status):
         db = Database()
@@ -59,13 +48,7 @@ class Menu:
 
     def update_menu_status(self, status, menu_id):
         db = Database()
-        data_tuple = (
-            status,
-            menu_id,
-        )
-        query = "update menu set status = %s where id = %s"
-        db.update_item(query, data_tuple)
-        return "success"
+        db.update_item(config.queries["UPDATE_MENU_STATUS"], (status, menu_id))
 
     def update_menu(self, menu_id, old_item, new_item):
         db = Database()

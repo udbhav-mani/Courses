@@ -1,7 +1,6 @@
+import logging
 from src.schemas import UpdateGrpBalanceSchema, UpdateUserBalanceSchema
-from src.helpers.exceptions import error
 from fastapi import (
-    HTTPException,
     status,
     APIRouter,
     Request,
@@ -11,19 +10,20 @@ from fastapi import (
 
 from typing import Annotated
 from src.helpers.jwt_helper import get_token
-from src.helpers import validate_body, grant_access, log
+from src.helpers import validate_body, grant_access, log, NoSuchUserError, handle_errors
 from src.controllers.user import Account
 
-
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
 @router.put("/balance/user", status_code=status.HTTP_200_OK)
 @validate_body(UpdateUserBalanceSchema)
 @grant_access
-@log
+@log(logger=logger)
 def put_balance(request: Request, body: Annotated[dict, Body()]):
     account = Account()
+    print(body["amount"])
     account.update_balance(amount=body["amount"], user_id=body["user_id"])
     return {
         "message": "success",
@@ -35,7 +35,7 @@ def put_balance(request: Request, body: Annotated[dict, Body()]):
 @router.put("/balance/grp", status_code=status.HTTP_200_OK)
 @validate_body(UpdateGrpBalanceSchema)
 @grant_access
-@log
+@log(logger=logger)
 def put_grp_balance(request: Request, body: Annotated[dict, Body()]):
     account = Account()
     account.update_balance(amount=body["amount"], grp_id=body["grp_id"])
@@ -48,18 +48,17 @@ def put_grp_balance(request: Request, body: Annotated[dict, Body()]):
 
 @router.get("/balance", status_code=status.HTTP_200_OK)
 @grant_access
-@log
+@log(logger=logger)
+@handle_errors
 def get_balance(request: Request, user_id: Annotated[int | None, Query()]):
     account = Account()
-    balance = account.view_balance(user_id=user_id)
-    if balance:
+    try:
+        balance = account.view_balance(user_id=user_id)
+    except NoSuchUserError as err:
+        raise NoSuchUserError(str(err))
+    else:
         return {
             "id": user_id,
             "balance": balance,
             "grp_id": get_token(request=request).get("grp_id"),
         }
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=error(code=404, message="No such user found."),
-        )

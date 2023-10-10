@@ -1,3 +1,4 @@
+import logging
 from fastapi import (
     status,
     APIRouter,
@@ -9,27 +10,26 @@ from typing import Annotated
 
 from src.helpers.jwt_helper import get_token
 from src.controllers.user import User
-from src.helpers.exceptions import error
-from src.helpers import error, log
+from src.helpers.exceptions import NoSuchUserError, error
+from src.helpers import log, handle_errors
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
 @router.get("/users", status_code=status.HTTP_200_OK)
-@log
+@handle_errors
+@log(logger=logger)
 def get_users(request: Request, user_id: Annotated[int | None, Query()] = None):
     grp_id = get_token(request).get("grp_id")
 
     user = User()
     response = user.get_users(grp_id=grp_id)
-    if user_id is not None:
-        for item in response:
-            if item.get("user_id") == user_id:
-                return [item]
 
-        return JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND,
-            content=error(code=404, message="No such user found."),
-        )
-    else:
+    if not user_id:
         return response
+
+    for item in response:
+        if item.get("user_id") == user_id:
+            return [item]
+    raise NoSuchUserError("No such user found.")

@@ -1,39 +1,39 @@
+import logging
 from src.helpers.jwt_helper import get_token
 from src.controllers.feedback import Feedback
 from src.controllers.menu import Menu
 from src.controllers.user import User
 from src.schemas import PlainFeedbackSchema
-from src.helpers.exceptions import error
+from src.helpers.exceptions import NotFoundException, error
 from fastapi import APIRouter, Request, Body, status, Query
 from typing import Annotated
-from src.helpers import grant_access, validate_body, log
+from src.helpers import grant_access, validate_body, log, handle_errors
 from src.controllers.criteria import Criteria
 from src.schemas import CriteriaSchema
 from fastapi.responses import JSONResponse
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@log
-@grant_access
 @router.get("/feedback/criterias", status_code=status.HTTP_200_OK)
+@log(logger=logger)
+@grant_access
+@handle_errors
 def get_fdb_criterias(request: Request):
     grp_id = get_token(request=request).get("grp_id")
-    response = User.get_menu_fdb_criterias(grp_id)
-    if response is None:
-        return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            content=error(
-                code=400, message="No criterias have been decided for current menu."
-            ),
-        )
-    return response
+    try:
+        response = User.get_menu_fdb_criterias(grp_id)
+    except NotFoundException as err:
+        raise NotFoundException(str(err))
+    else:
+        return response
 
 
 @router.post("/feedback/criterias", status_code=status.HTTP_201_CREATED)
 @grant_access
 @validate_body(CriteriaSchema)
-@log
+@log(logger=logger)
 def post_fdb_criterias(request: Request, body: Annotated[dict, Body()]):
     criteria = Criteria()
     criteria.set_fdb_criteria(
@@ -44,23 +44,25 @@ def post_fdb_criterias(request: Request, body: Annotated[dict, Body()]):
 
 @router.get("/feedback", status_code=status.HTTP_200_OK)
 @grant_access
-@log
-def get_fdbs(request: Request, criteria: Annotated[int | None, Query()] = None):
+@log(logger=logger)
+def get_fdbs(request: Request, criteria: Annotated[str | None, Query()] = None):
     feedback = Feedback()
     response = feedback.view_all_feedbacks(get_token(request=request).get("grp_id"))
-    if criteria is not None:
+
+    if criteria:
         filtered_response = []
         for item in response:
             if item.get("criteria") == criteria:
                 filtered_response.append(item)
         return filtered_response
+
     return response
 
 
 @router.post("/feedback", status_code=status.HTTP_201_CREATED)
 @grant_access
 @validate_body(PlainFeedbackSchema)
-@log
+@log(logger=logger)
 def post_feedback(request: Request, body: Annotated[list[dict], Body()]):
     user_id = get_token(request=request).get("user_id")
     grp_id = get_token(request=request).get("grp_id")

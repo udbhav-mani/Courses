@@ -1,13 +1,15 @@
 from src.models.database import Database
 from src.utils import config
+from src.helpers import log
+
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 class Criteria:
+    @log(logger=logger)
     def set_fdb_criteria(self, criterias_selected, grp_id):
-        logger.debug(f"set_fdb_criteria called with {criterias_selected, grp_id}")
         db = Database()
         response = db.get_item(
             config.queries["SET_FEEDBACK_CRITERIA_QUERY1"], (grp_id,)
@@ -25,16 +27,16 @@ class Criteria:
         db.add_items(config.queries["SET_FEEDBACK_CRITERIA_QUERY3"], data_list)
 
     @staticmethod
+    @log(logger=logger)
     def get_fdb_criteria():
-        logger.debug("get_fdb_criteria called.")
         db = Database()
         response = db.get_items(config.queries["GET_FDB_CRITERIAS"], data=None)
         criteria = [dict(id=line[0], criteria=line[1]) for line in response]
         return criteria
 
     @staticmethod
+    @log(logger=logger)
     def add_new_criteria(new_criteria):
-        logger.debug(f"add_new_criteria called with {new_criteria}.")
         db = Database()
         data_tuple = [(criteria,) for criteria in new_criteria]
         db.add_items(config.queries["UPDATE_CRITERIA"], data_tuple)

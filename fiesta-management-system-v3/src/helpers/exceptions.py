@@ -5,6 +5,10 @@ class NoSuchUserError(LookupError):
     pass
 
 
+class LoginError(LookupError):
+    pass
+
+
 class NoMenuFoundError(Exception):
     pass
 
@@ -16,6 +20,11 @@ class AccessDeniedException(Exception):
 class DbException(Exception):
     pass
 
+class NotFoundException(Exception):
+    pass
+
+class BadRequestException(Exception):
+    pass
 
 def error(code=None, message=None):
     error_response["error"]["code"] = code
