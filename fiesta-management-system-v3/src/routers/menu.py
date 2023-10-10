@@ -2,7 +2,7 @@ import logging
 from src.helpers.jwt_helper import get_token
 from fastapi import APIRouter, Request, Body, status, Query, Path
 from typing import Annotated
-from src.helpers import grant_access, validate_body
+from src.helpers import grant_access, validate_body, log
 from fastapi.responses import JSONResponse
 from datetime import datetime
 import starlette
@@ -27,10 +27,10 @@ class Status(str, Enum):
 
 @router.get("/menu", status_code=status.HTTP_200_OK)
 @grant_access
+@log
 def get_menu(request: Request, status: Annotated[Status, Query()]):
     grp_id = get_token(request=request).get("grp_id")
     menu = Menu()
-    logger.debug(f"GET /menu endpoint called with query -> {status}")
 
     if status is status.published:
         response = menu.view_accepted_menu(grp_id=grp_id)
@@ -57,6 +57,7 @@ def get_menu(request: Request, status: Annotated[Status, Query()]):
 @router.post("/menu", status_code=status.HTTP_201_CREATED)
 @grant_access
 @validate_body(MenuSchema)
+@log
 def post_menu(request: Request, body: Annotated[dict, Body()]):
     menu = Menu()
     items = body["items"]
@@ -70,9 +71,10 @@ def post_menu(request: Request, body: Annotated[dict, Body()]):
     return dict(message=response)
 
 
-@router.put("/menu", status_code=status.HTTP_200_OK)
-@validate_body(UpdateSchema)
+@log
 @grant_access
+@validate_body(UpdateSchema)
+@router.put("/menu", status_code=status.HTTP_200_OK)
 def put_menu(request: Request, body: Annotated[dict, Body()]):
     logger.debug(f"PUT /menu caled with body -> {body}")
     grp_id = get_token(request=request).get("grp_id")
@@ -104,8 +106,9 @@ def put_menu(request: Request, body: Annotated[dict, Body()]):
 
 
 @router.patch("/menu/{menu_id}", status_code=status.HTTP_200_OK)
-@grant_access
 @validate_body(UpdateItemSchema)
+@grant_access
+@log
 def patch_menu(
     request: Request, body: Annotated[dict, Body()], menu_id: Annotated[int, Path()]
 ):

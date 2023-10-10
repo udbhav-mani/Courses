@@ -1,8 +1,6 @@
 from src.models.database import Database
 from src.utils import config
-import logging
-
-logger = logging.getLogger(__name__)
+from src.helpers import log
 
 
 class Account:
@@ -11,19 +9,19 @@ class Account:
     all the manipulations regarding balance of an employee
     """
 
+    @log
     def view_balance(self, user_id=None):
         if user_id is None:
             user_id = self.user_id
 
-        logger.debug(f"view_balance called with {user_id}.")
         db = Database()
         balance = db.get_item(config.queries["VIEW_BALANCE"], (user_id,))
         if balance:
             return balance[0]
 
     @staticmethod
+    @log
     def update_balance(amount, grp_id=None, user_id=None):
-        logger.debug(f"update_balance called with {user_id}.")
         db = Database()
         if user_id is None:
             db.update_item(config.queries["UPDATE_BALANCE_GROUP"], (amount, grp_id))

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, Body, status
 from typing import Annotated
-from src.helpers import grant_access, validate_body
+from src.helpers import grant_access, validate_body, log
 from src.controllers.criteria import Criteria
 from src.schemas import CriteriaSchema
 
@@ -9,6 +9,7 @@ router = APIRouter()
 
 @router.get("/criterias", status_code=status.HTTP_200_OK)
 @grant_access
+@log
 def get_criteria(request: Request):
     criteria = Criteria()
     response = criteria.get_fdb_criteria()
@@ -18,6 +19,7 @@ def get_criteria(request: Request):
 @router.post("/criterias", status_code=status.HTTP_201_CREATED)
 @grant_access
 @validate_body(CriteriaSchema)
+@log
 def post_criteria(request: Request, body: Annotated[dict, Body()]):
     criteria = Criteria()
     criteria.add_new_criteria(body["criteria"])

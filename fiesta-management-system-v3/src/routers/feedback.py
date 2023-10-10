@@ -6,7 +6,7 @@ from src.schemas import PlainFeedbackSchema
 from src.helpers.exceptions import error
 from fastapi import APIRouter, Request, Body, status, Query
 from typing import Annotated
-from src.helpers import grant_access, validate_body
+from src.helpers import grant_access, validate_body, log
 from src.controllers.criteria import Criteria
 from src.schemas import CriteriaSchema
 from fastapi.responses import JSONResponse
@@ -14,10 +14,11 @@ from fastapi.responses import JSONResponse
 router = APIRouter()
 
 
-@router.get("/feedback/criterias", status_code=status.HTTP_200_OK)
+@log
 @grant_access
-def get_fdb_criterias():
-    grp_id = get_token().get("grp_id")
+@router.get("/feedback/criterias", status_code=status.HTTP_200_OK)
+def get_fdb_criterias(request: Request):
+    grp_id = get_token(request=request).get("grp_id")
     response = User.get_menu_fdb_criterias(grp_id)
     if response is None:
         return JSONResponse(
@@ -32,6 +33,7 @@ def get_fdb_criterias():
 @router.post("/feedback/criterias", status_code=status.HTTP_201_CREATED)
 @grant_access
 @validate_body(CriteriaSchema)
+@log
 def post_fdb_criterias(request: Request, body: Annotated[dict, Body()]):
     criteria = Criteria()
     criteria.set_fdb_criteria(
@@ -42,7 +44,8 @@ def post_fdb_criterias(request: Request, body: Annotated[dict, Body()]):
 
 @router.get("/feedback", status_code=status.HTTP_200_OK)
 @grant_access
-def get_fdbs(request: Request, criteria: Annotated[int | None, Query()]):
+@log
+def get_fdbs(request: Request, criteria: Annotated[int | None, Query()] = None):
     feedback = Feedback()
     response = feedback.view_all_feedbacks(get_token(request=request).get("grp_id"))
     if criteria is not None:
@@ -57,6 +60,7 @@ def get_fdbs(request: Request, criteria: Annotated[int | None, Query()]):
 @router.post("/feedback", status_code=status.HTTP_201_CREATED)
 @grant_access
 @validate_body(PlainFeedbackSchema)
+@log
 def post_feedback(request: Request, body: Annotated[list[dict], Body()]):
     user_id = get_token(request=request).get("user_id")
     grp_id = get_token(request=request).get("grp_id")

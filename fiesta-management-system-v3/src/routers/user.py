@@ -10,11 +10,13 @@ from typing import Annotated
 from src.helpers.jwt_helper import get_token
 from src.controllers.user import User
 from src.helpers.exceptions import error
+from src.helpers import error, log
 
 router = APIRouter()
 
 
 @router.get("/users", status_code=status.HTTP_200_OK)
+@log
 def get_users(request: Request, user_id: Annotated[int | None, Query()] = None):
     grp_id = get_token(request).get("grp_id")
 

@@ -16,13 +16,13 @@ def grant_access(fun):
         operation = fun.__name__
         if operation in access_control_list.get(role):
             return fun(*args, **kwargs)
-        else:
-            return JSONResponse(
-                status_code=status.HTTP_403_FORBIDDEN,
-                content=error(
-                    code=403,
-                    message="You do not have the permissions to perform this action.",
-                ),
-            )
+
+        return JSONResponse(
+            status_code=status.HTTP_403_FORBIDDEN,
+            content=error(
+                code=403,
+                message="You do not have the permissions to perform this action.",
+            ),
+        )
 
     return wrapper

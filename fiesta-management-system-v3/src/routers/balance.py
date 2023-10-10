@@ -11,7 +11,7 @@ from fastapi import (
 
 from typing import Annotated
 from src.helpers.jwt_helper import get_token
-from src.helpers import validate_body, grant_access
+from src.helpers import validate_body, grant_access, log
 from src.controllers.user import Account
 
 
@@ -21,6 +21,7 @@ router = APIRouter()
 @router.put("/balance/user", status_code=status.HTTP_200_OK)
 @validate_body(UpdateUserBalanceSchema)
 @grant_access
+@log
 def put_balance(request: Request, body: Annotated[dict, Body()]):
     account = Account()
     account.update_balance(amount=body["amount"], user_id=body["user_id"])
@@ -34,6 +35,7 @@ def put_balance(request: Request, body: Annotated[dict, Body()]):
 @router.put("/balance/grp", status_code=status.HTTP_200_OK)
 @validate_body(UpdateGrpBalanceSchema)
 @grant_access
+@log
 def put_grp_balance(request: Request, body: Annotated[dict, Body()]):
     account = Account()
     account.update_balance(amount=body["amount"], grp_id=body["grp_id"])
@@ -46,6 +48,7 @@ def put_grp_balance(request: Request, body: Annotated[dict, Body()]):
 
 @router.get("/balance", status_code=status.HTTP_200_OK)
 @grant_access
+@log
 def get_balance(request: Request, user_id: Annotated[int | None, Query()]):
     account = Account()
     balance = account.view_balance(user_id=user_id)

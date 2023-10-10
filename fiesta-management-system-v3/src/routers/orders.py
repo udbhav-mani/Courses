@@ -1,7 +1,7 @@
 from src.helpers.jwt_helper import get_token
 from fastapi import APIRouter, Request, Body, Query, Path, status
 from typing import Annotated
-from src.helpers import validate_body, grant_access
+from src.helpers import validate_body, grant_access, log
 from src.controllers.user import User
 
 from src.schemas import OrderSchema
@@ -12,6 +12,7 @@ router = APIRouter()
 @router.post("/orders", status_code=status.HTTP_201_CREATED)
 @validate_body(OrderSchema)
 @grant_access
+@log
 def place_order(request: Request, body: Annotated[dict, Body()]):
     user = User()
     user.update_balance(amount=-1 * body["amount"], user_id=body["user_id"])
@@ -29,6 +30,7 @@ def place_order(request: Request, body: Annotated[dict, Body()]):
 
 @router.get("/orders/{user_id}", status_code=status.HTTP_200_OK)
 @grant_access
+@log
 def get_order(
     request: Request,
     user_id: Annotated[int, Path()],

@@ -9,7 +9,7 @@ from fastapi.responses import JSONResponse
 from typing import Annotated
 
 from src.controllers import Login, User
-from src.helpers import NoSuchUserError, error, create_access_token, get_logger
+from src.helpers import NoSuchUserError, error, create_access_token, get_logger, log
 
 
 router = APIRouter()
@@ -17,6 +17,7 @@ logger = get_logger(__name__)
 
 
 @router.post("/login", status_code=status.HTTP_200_OK)
+@log
 def post(response: Response, body: Annotated[dict, Body()]):
     logger.debug(f"/login endpoint called for user -> {body.get('username')}")
     instance = Login()
@@ -50,6 +51,7 @@ def post(response: Response, body: Annotated[dict, Body()]):
             )
 
 
+@log
 def __get_access_token(user_data):
     user = User(user_name=user_data.get("username"))
     user.get_details()
