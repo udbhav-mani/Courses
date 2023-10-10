@@ -19,8 +19,8 @@ class Account:
         if balance:
             return balance[0]
 
-    @staticmethod
     @log
+    @staticmethod
     def update_balance(amount, grp_id=None, user_id=None):
         db = Database()
         if user_id is None:

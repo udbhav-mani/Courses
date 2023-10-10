@@ -47,7 +47,6 @@ def get_menu(request: Request, status: Annotated[Status, Query()]):
             ),
         )
     else:
-        print(response)
         logger.debug("GET Menu response -> {response}")
         date = response[0][1]
         items = [item[0] for item in response]
