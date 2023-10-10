@@ -1,9 +1,10 @@
 import logging
 from fastapi import APIRouter, Request, Body, status
 from typing import Annotated
+
 from src.helpers import grant_access, validate_body, log
-from src.controllers.criteria import Criteria
-from src.schemas import CriteriaSchema
+from src.controllers import Criteria
+from src.helpers.schemas.schemas import CriteriaSchema
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

@@ -1,5 +1,5 @@
 import logging
-from src.schemas import UpdateGrpBalanceSchema, UpdateUserBalanceSchema
+from src.helpers.schemas.schemas import UpdateGrpBalanceSchema, UpdateUserBalanceSchema
 from fastapi import (
     status,
     APIRouter,
@@ -7,11 +7,17 @@ from fastapi import (
     Body,
     Query,
 )
-
 from typing import Annotated
-from src.helpers.jwt_helper import get_token
-from src.helpers import validate_body, grant_access, log, NoSuchUserError, handle_errors
-from src.controllers.user import Account
+
+from src.helpers import (
+    validate_body,
+    grant_access,
+    log,
+    NoSuchUserError,
+    handle_errors,
+    get_token,
+)
+from src.controllers import Account
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -23,7 +29,6 @@ router = APIRouter()
 @log(logger=logger)
 def put_balance(request: Request, body: Annotated[dict, Body()]):
     account = Account()
-    print(body["amount"])
     account.update_balance(amount=body["amount"], user_id=body["user_id"])
     return {
         "message": "success",

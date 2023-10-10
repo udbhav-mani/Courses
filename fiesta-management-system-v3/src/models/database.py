@@ -1,6 +1,5 @@
 import os
 import mysql.connector
-from dotenv import load_dotenv
 
 from src.helpers.exceptions import DbException
 from environs import Env

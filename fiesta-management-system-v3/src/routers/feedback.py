@@ -1,16 +1,10 @@
 import logging
-from src.helpers.jwt_helper import get_token
-from src.controllers.feedback import Feedback
-from src.controllers.menu import Menu
-from src.controllers.user import User
-from src.schemas import PlainFeedbackSchema
-from src.helpers.exceptions import NotFoundException, error
 from fastapi import APIRouter, Request, Body, status, Query
 from typing import Annotated
-from src.helpers import grant_access, validate_body, log, handle_errors
-from src.controllers.criteria import Criteria
-from src.schemas import CriteriaSchema
-from fastapi.responses import JSONResponse
+
+from src.helpers.schemas.schemas import PlainFeedbackSchema, CriteriaSchema
+from src.helpers import grant_access, validate_body, log, handle_errors, get_token, NotFoundException
+from src.controllers import User, Menu, Feedback, Criteria
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

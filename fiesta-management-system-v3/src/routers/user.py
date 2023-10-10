@@ -5,13 +5,10 @@ from fastapi import (
     Request,
     Query,
 )
-from fastapi.responses import JSONResponse
 from typing import Annotated
 
-from src.helpers.jwt_helper import get_token
-from src.controllers.user import User
-from src.helpers.exceptions import NoSuchUserError, error
-from src.helpers import log, handle_errors
+from src.controllers import User
+from src.helpers import log, handle_errors, get_token, NoSuchUserError
 
 logger = logging.getLogger(__name__)
 router = APIRouter()

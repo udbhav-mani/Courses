@@ -1,7 +1,6 @@
 from datetime import timedelta
 import logging
 from typing import Annotated
-from fastapi.responses import JSONResponse
 from fastapi import (
     status,
     APIRouter,
@@ -10,7 +9,7 @@ from fastapi import (
 )
 
 from src.controllers import Login, User
-from src.helpers import error, LoginError, create_access_token, log, handle_errors
+from src.helpers import create_access_token, log, handle_errors
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
