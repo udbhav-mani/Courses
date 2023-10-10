@@ -1,5 +1,4 @@
 import logging
-from src.helpers.schemas.schemas import UpdateGrpBalanceSchema, UpdateUserBalanceSchema
 from fastapi import (
     status,
     APIRouter,
@@ -16,6 +15,8 @@ from src.helpers import (
     NoSuchUserError,
     handle_errors,
     get_token,
+    UpdateGrpBalanceSchema,
+    UpdateUserBalanceSchema,
 )
 from src.controllers import Account
 

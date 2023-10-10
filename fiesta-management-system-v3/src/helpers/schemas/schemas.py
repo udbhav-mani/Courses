@@ -1,21 +1,3 @@
-UpdateUserBalanceSchema = {
-    "type": "object",
-    "properties": {
-        "user_id": {"type": "integer"},
-        "amount": {"type": "integer", "minimum": 1},
-    },
-    "required": ["user_id", "amount"],
-}
-
-UpdateGrpBalanceSchema = {
-    "type": "object",
-    "properties": {
-        "grp_id": {"type": "integer"},
-        "amount": {"type": "integer", "minimum": 1},
-    },
-    "required": ["grp_id", "amount"],
-}
-
 # OrderSchema
 OrderSchema = {
     "type": "object",

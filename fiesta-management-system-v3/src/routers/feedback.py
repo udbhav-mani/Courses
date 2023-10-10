@@ -2,8 +2,16 @@ import logging
 from fastapi import APIRouter, Request, Body, status, Query
 from typing import Annotated
 
-from src.helpers.schemas.schemas import PlainFeedbackSchema, CriteriaSchema
-from src.helpers import grant_access, validate_body, log, handle_errors, get_token, NotFoundException
+from src.helpers import (
+    grant_access,
+    validate_body,
+    log,
+    handle_errors,
+    get_token,
+    NotFoundException,
+    PlainFeedbackSchema,
+    CriteriaSchema,
+)
 from src.controllers import User, Menu, Feedback, Criteria
 
 logger = logging.getLogger(__name__)
