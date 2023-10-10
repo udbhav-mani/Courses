@@ -9,29 +9,6 @@ class Validators:
         return (len(matches) > 0) and matches[0] == context
 
     @staticmethod
-    def validate_id(user_id):
-        validator = "[0-9]+"
-        return Validators.validations(context=user_id, validator=validator)
-
-    @staticmethod
-    def validate_username(user_name):
-        validator = "[A-Za-z0-9]+"
-        return Validators.validations(context=user_name, validator=validator)
-
-    @staticmethod
-    def validate_password(password):
-        validator = (
-            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-        )
-        return Validators.validations(context=password, validator=validator)
-
-    @staticmethod
-    def validate_date(date):
-        """validates date according to  regex = [0-9]{4}[-][0-9]{2}[-][0-9]{2}"""
-        validator = "[0-9]{4}[-][0-9]{2}[-][0-9]{2}"
-        return Validators.validations(context=date, validator=validator)
-
-    @staticmethod
     def validate_request(schema, data):
         try:
             jsonschema.validate(instance=data, schema=schema)

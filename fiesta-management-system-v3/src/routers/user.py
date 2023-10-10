@@ -1,6 +1,3 @@
-from src.helpers.jwt_helper import get_token
-from src.controllers.user import User
-from src.helpers.exceptions import error
 from fastapi import (
     status,
     APIRouter,
@@ -9,6 +6,10 @@ from fastapi import (
 )
 from fastapi.responses import JSONResponse
 from typing import Annotated
+
+from src.helpers.jwt_helper import get_token
+from src.controllers.user import User
+from src.helpers.exceptions import error
 
 router = APIRouter()
 

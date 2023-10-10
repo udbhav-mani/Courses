@@ -14,3 +14,4 @@ proj4
 *.db
 *.ini
 fiesta-management-system-v3/src/app.log
+fiesta-management-system-v3/app.log

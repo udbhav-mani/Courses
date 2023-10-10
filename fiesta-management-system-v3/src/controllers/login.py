@@ -1,8 +1,8 @@
 import hashlib
 
-from helpers.exceptions import NoSuchUserError
-from models.database import Database
-from utils import config
+from src.helpers.exceptions import NoSuchUserError
+from src.models.database import db
+from src.utils import config
 
 
 class Login:
@@ -13,7 +13,6 @@ class Login:
             return False
         except NoSuchUserError:
             return "error"
-
 
     @staticmethod
     def __authenticate_user(user_name, password):
@@ -29,8 +28,9 @@ class Login:
 
     @staticmethod
     def __get_password_from_db(user_name):
-        db = Database()
-        db_hashed_password = db.get_item(config.queries["GET_HASHED_PASSWORD"], (user_name,))
+        db_hashed_password = db.get_item(
+            config.queries["GET_HASHED_PASSWORD"], (user_name,)
+        )
         return db_hashed_password
 
     @staticmethod

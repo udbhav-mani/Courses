@@ -1,5 +1,8 @@
 from src.models.database import Database
 from src.utils import config
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Account:
@@ -12,6 +15,7 @@ class Account:
         if user_id is None:
             user_id = self.user_id
 
+        logger.debug(f"view_balance called with {user_id}.")
         db = Database()
         balance = db.get_item(config.queries["VIEW_BALANCE"], (user_id,))
         if balance:
@@ -19,6 +23,7 @@ class Account:
 
     @staticmethod
     def update_balance(amount, grp_id=None, user_id=None):
+        logger.debug(f"update_balance called with {user_id}.")
         db = Database()
         if user_id is None:
             db.update_item(config.queries["UPDATE_BALANCE_GROUP"], (amount, grp_id))

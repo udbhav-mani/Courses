@@ -3,8 +3,10 @@ import mysql.connector
 from dotenv import load_dotenv
 
 from src.helpers.exceptions import DbException
+from environs import Env
 
-load_dotenv()
+env = Env()
+env.read_env(path="src/.env")
 
 
 class Database:
@@ -33,7 +35,7 @@ class Database:
             self.cursor.executemany(query, data)
             _id = self.cursor.lastrowid
             self.connection.commit()
-        except BaseException:
+        except Exception:
             raise DbException
         else:
             return _id
@@ -42,7 +44,7 @@ class Database:
         try:
             self.cursor.execute(query, data)
             response = self.cursor.fetchone()
-        except BaseException:
+        except Exception:
             raise DbException
         else:
             return response
@@ -52,7 +54,7 @@ class Database:
             self.cursor.execute(query, data)
             response = self.cursor.fetchall()
             self.connection.commit()
-        except BaseException:
+        except Exception:
             raise DbException
         else:
             return response
@@ -62,7 +64,10 @@ class Database:
             self.cursor.execute(query, data)
             _id = self.cursor.lastrowid
             self.connection.commit()
-        except BaseException:
+        except Exception:
             raise DbException
         else:
             return _id
+
+
+db = Database()

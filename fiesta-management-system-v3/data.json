@@ -34,5 +34,46 @@
     "UPDATE_MENU": "update menu set `status` = 'pending' where id = %s",
     "CHECK_USER_FDB": "select f.user_id from menu_fdb as f inner join `approved_menu` as m on m.id = f.menu_id inner join `groups` as g on g.menu_id = m.id where f.user_id = %s",
     "CHECK_ORDER": "select id, user_id, amount, created_at from orders where user_id = %s order by created_at desc;"
+  },
+  "rbac": {
+    "admin": [
+      "put_grp_balance",
+      "get_criteria",
+      "post_criteria",
+      "put_balance",
+      "get_balance",
+      "get_fdb_criterias",
+      "post_fdb_criterias",
+      "get_fdbs",
+      "post_feedback",
+      "get_menu",
+      "post_menu",
+      "put_menu",
+      "patch_menu",
+      "place_order",
+      "get_order"
+    ],
+    "f_emp": [
+      "put_balance",
+      "put_balance",
+      "get_order",
+      "get_balance",
+      "get_fdb_criterias",
+      "get_menu",
+      "put_menu",
+      "place_order",
+      "patch_menu"
+    ],
+    "emp": [
+      "get_criteria",
+      "post_criteria",
+      "get_balance",
+      "place_order",
+      "get_order",
+      "get_fdb_criterias",
+      "get_fdbs",
+      "post_feedback",
+      "get_menu"
+    ]
   }
 }
