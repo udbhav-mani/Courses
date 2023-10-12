@@ -1,15 +1,21 @@
+"""
+Provides a decorator for handling responses in routers
+"""
+
 import functools
 import traceback
+import logging
 from fastapi import status
 from fastapi.responses import JSONResponse
-from src.helpers.exceptions import (
+from src.helpers import (
     LoginError,
     NoSuchUserError,
     NotFoundException,
     BadRequestException,
+    NoMenuFoundError,
+    error
 )
-from src.helpers import error
-import logging
+
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +27,7 @@ def handle_errors(function):
             return_value = function(*args, **kwargs)
             return return_value
 
-        except (NoSuchUserError, NotFoundException) as err:
+        except (NoSuchUserError, NotFoundException, NoMenuFoundError) as err:
             logger.error(str(err))
             return JSONResponse(
                 status_code=status.HTTP_404_NOT_FOUND,

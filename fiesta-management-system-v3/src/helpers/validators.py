@@ -12,5 +12,5 @@ class Validators:
     def validate_request(schema, data):
         try:
             jsonschema.validate(instance=data, schema=schema)
-        except Exception as error:
+        except TypeError as error:
             return str(error)

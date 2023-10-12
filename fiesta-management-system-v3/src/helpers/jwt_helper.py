@@ -1,3 +1,7 @@
+"""
+Provides all functions related to jwt, and managing tokens
+"""
+
 from datetime import datetime, timedelta
 import os
 from fastapi import (
@@ -14,6 +18,10 @@ ALGORITHM = os.getenv("ALGORITHM")
 
 
 def create_access_token(user_data: dict, expires_delta: timedelta | None = None):
+    """
+    Creates an access token for user after successfull login
+    """
+
     encode = user_data
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -24,6 +32,9 @@ def create_access_token(user_data: dict, expires_delta: timedelta | None = None)
 
 
 def get_token(request: Request):
+    """
+    Returns the data from jwt as a dictionary whenever called
+    """
     try:
         token = request.headers.get("Authorization").split(" ")[1]
         if token is None:
@@ -41,4 +52,4 @@ def get_token(request: Request):
             "role": role,
         }
     except JWTError as error:
-        raise HTTPException(status_code=404, detail=str(error))
+        raise HTTPException(status_code=404, detail=str(error)) from error

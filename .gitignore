@@ -15,3 +15,4 @@ proj4
 *.ini
 fiesta-management-system-v3/src/app.log
 fiesta-management-system-v3/app.log
+.vscode

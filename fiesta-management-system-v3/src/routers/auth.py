@@ -1,3 +1,7 @@
+"""
+FastAPI route for user login, which authenticates the user's credentials,
+generates an access token, and returns.
+"""
 from datetime import timedelta
 import logging
 from typing import Annotated
@@ -19,6 +23,16 @@ router = APIRouter()
 @log(logger=logger)
 @handle_errors
 def login(response: Response, body: Annotated[dict, Body()]):
+    """
+    Authenticates user credentials and returns an access token.
+
+    Args:
+      response (Response): FASTAPI response abject
+      body (Annotated[dict, Body()])
+
+    Returns:
+    "access_token" and "token_type".
+    """
     instance = Login()
     instance.authenticate_credentials(
         user_name=body.get("username"), password=body.get("password")
@@ -28,6 +42,10 @@ def login(response: Response, body: Annotated[dict, Body()]):
 
 
 def __get_access_token(user_data):
+    """
+    Generates an access token for a user based on their username and
+    user details.
+    """
     user = User(user_name=user_data.get("username"))
     user.get_details()
     user_data = {

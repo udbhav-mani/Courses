@@ -61,7 +61,7 @@ class Database:
     def update_item(self, query, data):
         try:
             self.cursor.execute(query, data)
-            _id = self.cursor.lastrowid
+            _id = self.cursor.rowcount
             self.connection.commit()
         except Exception:
             raise DbException

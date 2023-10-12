@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 
 from src.helpers.exceptions import error
 from src.helpers.jwt_helper import get_token
-from src.utils.config import rbac as access_control_list
+from src.utils.config import rbac as access_control_list, prompts
 
 
 def grant_access(fun):
@@ -21,7 +21,7 @@ def grant_access(fun):
             status_code=status.HTTP_403_FORBIDDEN,
             content=error(
                 code=403,
-                message="You do not have the permissions to perform this action.",
+                message= prompts.get("PERMISSION_DENIED"),
             ),
         )
 

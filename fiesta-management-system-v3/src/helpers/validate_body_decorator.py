@@ -15,10 +15,9 @@ def validate_body(schema):
             if validator:
                 return JSONResponse(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    content=error(code=404, message=validator.split("\n")[0]),
+                    content=error(code=404, message= validator.split('\n', maxsplit=1)[0][0]),
                 )
-            else:
-                return fun(*args, **kwargs)
+            return fun(*args, **kwargs)
 
         return wrapper
 
