@@ -84,7 +84,6 @@ class Menu:
         _id = db.add_item(config.queries["QUERY_ADD_COMMENT"], data_tuple)
         if _id:
             return _id
-        
         raise NoMenuFoundError("No such menu found")
 
     def get_menu_by_status(self, grp_id, status):
@@ -122,7 +121,6 @@ class Menu:
         _id_update = db.update_item(config.queries["QUERY_UPDATE_GROUP"], data_tuple)
         if _id_update:
             return _id_update
-        
         raise DbException("There was an error in publishing menu")
 
     def update_menu_status(self, status, menu_id):
@@ -152,10 +150,8 @@ class Menu:
         )
         if not _id:
             raise NoMenuFoundError("Could not update, No such menu or item found!")
-        
         try:
             _id_1 = self.update_menu_status(status="pending", menu_id=menu_id)
         except DbException:
             raise DbException
-        else:
-            return _id_1
+        return _id_1
