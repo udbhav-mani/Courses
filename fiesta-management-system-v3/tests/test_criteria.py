@@ -1,40 +1,61 @@
 import json
-from unittest import TestCase, mock
+from unittest import mock
+from unittest import TestCase
 
-from src.controllers.user import User
+from src.controllers.criteria import Criteria
+from src.helpers.exceptions import DbException
 from src.utils import config
 
 
 class TestCriteria(TestCase):
     def setUp(self):
-        self.obj = User("dummy")
-        with open(r"C:\Users\umani\Desktop\clone\data.json", "r") as file:
+        self.obj = Criteria()
+        with open("data.json", "r") as file:
             data = json.load(file)
-            config.prompts = data["menu_choices"]
             config.queries = data["queries"]
 
-    @mock.patch("src.models.database.Database.get_items")
-    def test_get_fdb_criteria(self, mocked_get_items):
-        mocked_get_items.return_value = [("taste",)]
+    @mock.patch("src.controllers.criteria.db")
+    def test_set_fdb_criteria_success(self, mocked_db_object):
+        mocked_db_object.get_item.return_value = (1, 2, 3)
+        mocked_db_object.add_items.return_value = 22
+
+        response = self.obj.set_fdb_criteria({"criteria": ["taste", "color"]}, 1)
+        self.assertEqual(response, 22)
+
+    @mock.patch("src.controllers.criteria.db")
+    def test_set_fdb_criteria_failure(self, mocked_db_object):
+        mocked_db_object.get_item.return_value = (1, 2, 3)
+        mocked_db_object.add_items.return_value = None
+
+        with self.assertRaises(DbException):
+            self.obj.set_fdb_criteria({"criteria": ["taste", "color"]}, -1)
+
+    @mock.patch("src.controllers.criteria.db")
+    def test_get_fdb_criteria_success(self, mocked_db_object):
+        mocked_db_object.get_items.return_value = [(1, "taste"), (2, "color")]
+
         response = self.obj.get_fdb_criteria()
-        self.assertEqual(response, ["taste"])
+        self.assertEqual(
+            response, [{"id": 1, "criteria": "taste"}, {"id": 2, "criteria": "color"}]
+        )
 
-    @mock.patch("src.models.database.Database.add_items")
-    def test_add_new_criteria(self, mocked_add_items):
-        mocked_add_items.return_value = [("taste",)]
-        response = self.obj.add_new_criteria([])
-        self.assertEqual(response, None)
+    @mock.patch("src.controllers.criteria.db")
+    def test_get_fdb_criteria_failure(self, mocked_db_object):
+        mocked_db_object.get_items.return_value = []
 
-    @mock.patch("builtins.print")
-    def test_display_criteria(self, mocked_add_items):
-        mocked_add_items.return_value = ""
-        response = self.obj.display_criteria([])
-        self.assertEqual(response, None)
+        with self.assertRaises(DbException):
+            self.obj.get_fdb_criteria()
 
-    @mock.patch("src.models.database.Database.get_item")
-    @mock.patch("src.models.database.Database.add_items")
-    def test_set_fdb_criteria(self, mocked_add_items, mocked_get_item):
-        mocked_add_items.return_value = [1]
-        mocked_get_item.return_value = [1]
-        response = self.obj.set_fdb_criteria([])
-        self.assertEqual(response, None)
+    @mock.patch("src.controllers.criteria.db")
+    def test_add_new_criteria_success(self, mocked_db_object):
+        mocked_db_object.add_items.return_value = 3
+
+        response = self.obj.add_new_criteria(["taste", "creamy"])
+        self.assertEqual(response, 3)
+
+    @mock.patch("src.controllers.criteria.db")
+    def test_add_new_criteria_failure(self, mocked_db_object):
+        mocked_db_object.add_items.return_value = None
+
+        with self.assertRaises(DbException):
+            self.obj.add_new_criteria([1, "creamy"])

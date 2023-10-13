@@ -7,13 +7,13 @@ import traceback
 import logging
 from fastapi import status
 from fastapi.responses import JSONResponse
-from src.helpers import (
+from src.helpers.exceptions import (
     LoginError,
     NoSuchUserError,
     NotFoundException,
     BadRequestException,
     NoMenuFoundError,
-    error
+    error,
 )
 
 
@@ -33,12 +33,14 @@ def handle_errors(function):
                 status_code=status.HTTP_404_NOT_FOUND,
                 content=error(code=404, message=str(err)),
             )
+
         except LoginError as err:
             logger.error(str(err))
             return JSONResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 content=error(code=401, message=str(err)),
             )
+
         except BadRequestException as err:
             logger.error(str(err))
             return JSONResponse(

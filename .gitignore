@@ -5,6 +5,7 @@ fiesta-management-system/.env
 __pycache__
 .venv
 .coverage
+.coveragerc
 .db
 fastapivenv
 .idea
@@ -16,3 +17,4 @@ proj4
 fiesta-management-system-v3/src/app.log
 fiesta-management-system-v3/app.log
 .vscode
+fiesta-management-system-v3/.coveragerc

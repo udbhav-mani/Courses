@@ -2,9 +2,9 @@
 Provides a class which provides all the operations
 related to menu
 """
-from src.models.database import Database
+from src.models.database import db
 from src.utils import config
-from src.helpers import NoMenuFoundError
+from src.helpers import NoMenuFoundError, DbException
 
 
 class Menu:
@@ -25,12 +25,14 @@ class Menu:
         Returns:
         - menu_id
         """
-        db = Database()
         response = db.get_item(
             config.queries["SET_FEEDBACK_CRITERIA_QUERY1"], (grp_id,)
         )
-        _menu_id = response[0]
-        return _menu_id
+        if response:
+            _menu_id = response[0]
+            return _menu_id
+
+        raise NoMenuFoundError("No such menu found!")
 
     def view_accepted_menu(self, grp_id):
         """
@@ -42,7 +44,6 @@ class Menu:
         Returns:
         the items from the accepted menu.
         """
-        db = Database()
         data_tuple = (grp_id,)
         items = db.get_items(config.queries["GET_ACCEPTED_MENU"], data_tuple)
         if items:
@@ -60,11 +61,14 @@ class Menu:
         name: name of the person proposing menu
         grp_id: grp_id of the menu
         """
-        db = Database()
         data_tuple = (date, "pending", name, grp_id)
-        _id = db.add_item(config.queries["ADD_MENU"], data_tuple)
-        data_list = [(_id, item) for item in data]
-        db.add_items(config.queries["PROPOSE_MENU_ITEMS"], data_list)
+        _id_1 = db.add_item(config.queries["ADD_MENU"], data_tuple)
+        data_list = [(_id_1, item) for item in data]
+        _id_2 = db.add_items(config.queries["PROPOSE_MENU_ITEMS"], data_list)
+        if _id_1 and _id_2:
+            return True
+
+        raise DbException
 
     def reject_menu(self, menu_id, comments, username):
         """
@@ -75,10 +79,13 @@ class Menu:
         comments: comments for rejection
         username: name of the person rejecting menu
         """
-        db = Database()
         self.update_menu_status("rejected", menu_id)
         data_tuple = (menu_id, comments, username)
-        db.add_item(config.queries["QUERY_ADD_COMMENT"], data_tuple)
+        _id = db.add_item(config.queries["QUERY_ADD_COMMENT"], data_tuple)
+        if _id:
+            return _id
+        
+        raise NoMenuFoundError("No such menu found")
 
     def get_menu_by_status(self, grp_id, status):
         """
@@ -91,7 +98,6 @@ class Menu:
         Returns:
         the items from the accepted menu.
         """
-        db = Database()
         items = db.get_items(config.queries["GET_MENU"], (status, grp_id))
         if items:
             return items
@@ -107,14 +113,17 @@ class Menu:
         grp_id: grp_id of a person.
         menu_date: date of the menu to be published.
         """
-        db = Database()
         self.update_menu_status("published", menu_id)
 
         data_tuple = (menu_id, menu_date)
         _id = db.add_item(config.queries["QUERY_APPROVE_MENU"], data_tuple)
 
         data_tuple = (_id, grp_id)
-        db.update_item(config.queries["QUERY_UPDATE_GROUP"], data_tuple)
+        _id_update = db.update_item(config.queries["QUERY_UPDATE_GROUP"], data_tuple)
+        if _id_update:
+            return _id_update
+        
+        raise DbException("There was an error in publishing menu")
 
     def update_menu_status(self, status, menu_id):
         """
@@ -124,8 +133,10 @@ class Menu:
         status: status of the menu to be updated.
         menu_id: menu_id of the menu to be updated.
         """
-        db = Database()
-        db.update_item(config.queries["UPDATE_MENU_STATUS"], (status, menu_id))
+        _id = db.update_item(config.queries["UPDATE_MENU_STATUS"], (status, menu_id))
+        if _id:
+            return True
+        raise DbException
 
     def update_menu(self, menu_id, old_item, new_item):
         """
@@ -136,10 +147,15 @@ class Menu:
         new_item: new item to be added.
         menu_id: menu_id of the menu to be updated.
         """
-        db = Database()
-        rid = db.update_item(
+        _id = db.update_item(
             config.queries["UPDATE_ITEM"], (new_item, old_item, menu_id)
         )
-        if not rid:
+        if not _id:
             raise NoMenuFoundError("Could not update, No such menu or item found!")
-        self.update_menu_status(status="pending", menu_id=menu_id)
+        
+        try:
+            _id_1 = self.update_menu_status(status="pending", menu_id=menu_id)
+        except DbException:
+            raise DbException
+        else:
+            return _id_1

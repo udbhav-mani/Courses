@@ -2,7 +2,8 @@
 Provides a class for operations related to orders
 """
 
-from src.models.database import Database
+from src.helpers.exceptions import DbException
+from src.models.database import db
 from src.utils import config
 
 
@@ -24,7 +25,6 @@ class Orders:
         - Each dictionary represents an order
         - "order_id", "user_id", "amount", and "date".
         """
-        db = Database()
         response = db.get_items(config.queries["CHECK_ORDER"], (user_id,))
         if date is None:
             return [
@@ -61,8 +61,11 @@ class Orders:
         Returns:
         - order_id.
         """
-        db = Database()
+
         order_id = db.add_item(
             config.queries["STORE_ORDER"], (user_id, amount, created_by)
         )
-        return order_id
+        if order_id:
+            return order_id
+
+        raise DbException("Could not store order in db.")

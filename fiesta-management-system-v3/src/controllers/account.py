@@ -2,7 +2,8 @@
 Defines class Account for functions related to account
 """
 import logging
-from src.models.database import Database
+from src.helpers.exceptions import DbException
+from src.models.database import db
 from src.utils import config
 from src.helpers import log, NoSuchUserError
 
@@ -27,7 +28,6 @@ class Account:
         Returns:
           The balance of the user.
         """
-        db = Database()
         balance = db.get_item(config.queries["VIEW_BALANCE"], (user_id,))
         if balance:
             return balance[0]
@@ -45,8 +45,16 @@ class Account:
           grp_id: grp_id
           user_id: user_id of user
         """
-        db = Database()
+        _id = None
         if user_id is None:
-            db.update_item(config.queries["UPDATE_BALANCE_GROUP"], (amount, grp_id))
+            _id = db.update_item(
+                config.queries["UPDATE_BALANCE_GROUP"], (amount, grp_id)
+            )
         else:
-            db.update_item(config.queries["UPDATE_BALANCE_USER"], (amount, user_id))
+            _id = db.update_item(
+                config.queries["UPDATE_BALANCE_USER"], (amount, user_id)
+            )
+
+        if _id:
+            return _id
+        raise DbException("Could not update balance")

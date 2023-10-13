@@ -21,7 +21,7 @@ def grant_access(fun):
             status_code=status.HTTP_403_FORBIDDEN,
             content=error(
                 code=403,
-                message= prompts.get("PERMISSION_DENIED"),
+                message=prompts.get("PERMISSION_DENIED"),
             ),
         )
 

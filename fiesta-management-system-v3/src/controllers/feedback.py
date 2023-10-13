@@ -2,8 +2,8 @@
 Provides feedback class for operations
 related to feedback
 """
-from src.helpers.exceptions import NotFoundException
-from src.models.database import Database
+from src.helpers.exceptions import DbException, NotFoundException
+from src.models.database import db
 from src.utils import config
 
 
@@ -24,12 +24,14 @@ class Feedback:
         Returns:
         list of all feedbacks
         """
-        db = Database()
         response = db.get_items(config.queries["VIEW_FEEDBACK"], (grp_id,))
-        return [
-            {"criteria": tup[0], "feedback": tup[1], "comments": tup[2]}
-            for tup in response
-        ]
+        if response:
+            return [
+                {"criteria": tup[0], "feedback": tup[1], "comments": tup[2]}
+                for tup in response
+            ]
+
+        raise DbException("Could not view feedbacks.")
 
     @staticmethod
     def get_menu_fdb_criterias(grp_id):
@@ -42,7 +44,6 @@ class Feedback:
         Returns:
         feedback criterias for a menu
         """
-        db = Database()
         response = db.get_items(config.queries["GET_MENU_FDB_CRITERIAS"], (grp_id,))
         if len(response) > 0:
             criterias = [{"cr_id": tup[1], "criteria": tup[2]} for tup in response]
@@ -56,5 +57,7 @@ class Feedback:
         Adds feedback to a database.
 
         """
-        db = Database()
-        db.add_items(config.queries["ADD_FEEDBACK"], feedback)
+        _id = db.add_items(config.queries["ADD_FEEDBACK"], feedback)
+        if _id:
+            return _id
+        raise DbException("Could not add feedback")

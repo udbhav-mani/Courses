@@ -83,10 +83,12 @@ def post_menu(request: Request, body: Annotated[dict, Body()]):
       - a BadRequestException
       - or success message
     """
+
     name = get_token(request=request).get("username")
     grp_id = get_token(request=request).get("grp_id")
     items = body["items"]
     date = body["date"]
+    pending, rejected = None, None
 
     menu = Menu()
     try:
@@ -158,7 +160,11 @@ def patch_menu(
     menu.update_menu(
         menu_id=menu_id, old_item=body["old_item"], new_item=body["new_item"]
     )
-    return {"message": prompts.get("SUCCESS_MESSAGE"), "new_item": body["new_item"], "menu_id": menu_id}
+    return {
+        "message": prompts.get("SUCCESS_MESSAGE"),
+        "new_item": body["new_item"],
+        "menu_id": menu_id
+    }
 
 
 def __publish_menu(grp_id, menu_id):
