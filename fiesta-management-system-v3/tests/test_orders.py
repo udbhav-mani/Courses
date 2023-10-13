@@ -10,9 +10,7 @@ from src.utils import config
 class TestOrders(TestCase):
     def setUp(self):
         self.obj = Orders()
-        with open("data.json", "r") as file:
-            data = json.load(file)
-            config.queries = data["queries"]
+
 
     @mock.patch("src.controllers.orders.db")
     def test_check_order_success(self, mocked_db_object):

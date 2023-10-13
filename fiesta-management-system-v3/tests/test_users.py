@@ -10,9 +10,7 @@ from src.utils import config
 class TestUsers(TestCase):
     def setUp(self):
         self.obj = User("umani")
-        with open("data.json", "r") as file:
-            data = json.load(file)
-            config.queries = data["queries"]
+
 
     @mock.patch("src.controllers.user.db")
     def test_get_details_success(self, mocked_db_object):

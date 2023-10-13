@@ -10,9 +10,7 @@ from src.utils import config
 class TestAccount(TestCase):
     def setUp(self):
         self.obj = Account()
-        with open("data.json", "r") as file:
-            data = json.load(file)
-            config.queries = data["queries"]
+
 
     @mock.patch("src.controllers.account.db")
     def test_view_balance_success(self, mocked_db_object):

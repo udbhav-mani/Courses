@@ -10,9 +10,7 @@ from src.utils import config
 class TestFeedback(TestCase):
     def setUp(self):
         self.obj = Feedback()
-        with open("data.json", "r") as file:
-            data = json.load(file)
-            config.queries = data["queries"]
+
 
     @mock.patch("src.controllers.feedback.db")
     def test_get_menu_fdb_criterias_success(self, mocked_db_object):

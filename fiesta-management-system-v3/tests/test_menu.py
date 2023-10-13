@@ -10,9 +10,7 @@ from src.utils import config
 class TestMenu(TestCase):
     def setUp(self):
         self.obj = User("dummy")
-        with open("data.json", "r") as file:
-            data = json.load(file)
-            config.queries = data["queries"]
+
 
     @mock.patch("src.controllers.menu.db")
     def test_view_accepted_menu_success(self, mocked_db_object):
