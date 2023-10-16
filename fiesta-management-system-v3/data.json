@@ -83,6 +83,7 @@
     "MENU_ALREADY_PENDING_REJECTED": "A menu is already in pending or rejected state, Please try after some time.",
     "AMOUNT_INVALID": "Amount is greater than current balance.",
     "NO_USER_FOUND": "No such user found.",
+    "NO_MENU_FOUND": "No such menu found.",
     "PERMISSION_DENIED": "You do not have the permissions to perform this action."
   }
 }

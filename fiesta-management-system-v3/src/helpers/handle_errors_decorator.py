@@ -5,6 +5,7 @@ Provides a decorator for handling responses in routers
 import functools
 import traceback
 import logging
+from jsonschema import ValidationError
 from fastapi import status
 from fastapi.responses import JSONResponse
 from src.helpers.exceptions import (
@@ -47,9 +48,15 @@ def handle_errors(function):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content=error(code=400, message=str(err)),
             )
+        except ValidationError as err:
+            logger.error(str(err))
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content=error(code=400, message=str(err).split("\n")[0]),
+            )
 
         except Exception as err:
-            logger.critical(str(traceback.print_exc))
+            # logger.critical()
             return JSONResponse(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 content=error(code=500, message=str(err)),

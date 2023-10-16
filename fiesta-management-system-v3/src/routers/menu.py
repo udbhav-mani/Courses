@@ -32,9 +32,10 @@ class Status(str, Enum):
     """
     Defines an enumeration for different statuses
     """
+
     PUBLISHED = "published"
     PENDING = "pending"
-    NOT_PUBLISHED = "not_published"
+    NOT_PUBLISHED = "not published"
     REJECTED = "rejected"
 
 
@@ -106,8 +107,8 @@ def post_menu(request: Request, body: Annotated[dict, Body()]):
 @router.put("/menu", status_code=status.HTTP_200_OK)
 @log(logger=logger)
 @grant_access
-@validate_body(UpdateSchema)
 @handle_errors
+@validate_body(UpdateSchema)
 def put_menu(request: Request, body: Annotated[dict, Body()]):
     """
     Updates the status of a menu based on the provided parameters.
@@ -123,13 +124,13 @@ def put_menu(request: Request, body: Annotated[dict, Body()]):
     menu = Menu()
     menu_id = body["menu_id"]
     menu_status = body["status"]
-    comments = body["comments"]
     username = get_token(request=request).get("username")
 
     if menu_status == "published":
         return __publish_menu(grp_id=grp_id, menu_id=menu_id)
 
     if menu_status == "rejected":
+        comments = body["comments"]
         return __reject_menu(menu_id=menu_id, comments=comments, username=username)
 
     menu.update_menu_status(menu_status, menu_id)
@@ -163,7 +164,7 @@ def patch_menu(
     return {
         "message": prompts.get("SUCCESS_MESSAGE"),
         "new_item": body["new_item"],
-        "menu_id": menu_id
+        "menu_id": menu_id,
     }
 
 

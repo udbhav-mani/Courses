@@ -32,7 +32,7 @@ class Menu:
             _menu_id = response[0]
             return _menu_id
 
-        raise NoMenuFoundError("No such menu found!")
+        raise NoMenuFoundError(config.prompts["NO_MENU_FOUND"])
 
     def view_accepted_menu(self, grp_id):
         """
@@ -134,7 +134,7 @@ class Menu:
         _id = db.update_item(config.queries["UPDATE_MENU_STATUS"], (status, menu_id))
         if _id:
             return True
-        raise DbException
+        raise DbException("Could not update menu")
 
     def update_menu(self, menu_id, old_item, new_item):
         """
@@ -153,5 +153,5 @@ class Menu:
         try:
             _id_1 = self.update_menu_status(status="pending", menu_id=menu_id)
         except DbException:
-            raise DbException
+            raise NoMenuFoundError("Could not update menu.")
         return _id_1

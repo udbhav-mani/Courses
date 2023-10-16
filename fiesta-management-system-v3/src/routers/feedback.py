@@ -71,6 +71,7 @@ def post_fdb_criterias(request: Request, body: Annotated[dict, Body()]):
 @router.get("/feedback", status_code=status.HTTP_200_OK)
 @grant_access
 @log(logger=logger)
+@handle_errors
 def get_fdb(request: Request, criteria: Annotated[str | None, Query()] = None):
     """
     Retrieves feedback data and also filters it based on criteria.
@@ -98,6 +99,7 @@ def get_fdb(request: Request, criteria: Annotated[str | None, Query()] = None):
 @grant_access
 @validate_body(PlainFeedbackSchema)
 @log(logger=logger)
+@handle_errors
 def post_fdb(request: Request, body: Annotated[list[dict], Body()]):
     """
     Extracts user and group IDs from the request and

@@ -2,7 +2,7 @@
 Provides feedback class for operations
 related to feedback
 """
-from src.helpers.exceptions import DbException, NotFoundException
+from src.helpers.exceptions import BadRequestException, DbException, NotFoundException
 from src.models.database import db
 from src.utils import config
 
@@ -31,7 +31,7 @@ class Feedback:
                 for tup in response
             ]
 
-        raise DbException("Could not view feedbacks.")
+        raise BadRequestException("No feedbacks available.")
 
     @staticmethod
     def get_menu_fdb_criterias(grp_id):
