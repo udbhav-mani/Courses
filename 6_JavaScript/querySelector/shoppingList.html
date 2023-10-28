@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>My shopping list</title>
+    </head>
+
+    <body>
+        <h1 id="heading">My shopping list</h1>
+        <input type="text" name="item" id="item" />
+        <button id="addButton">Add item</button>
+        <ol class="myList"></ol>
+        <script>
+            addButton = document
+                .getElementById("addButton")
+                .addEventListener("click", addItem);
+            function addItem() {
+                shoppingList = document.querySelector(".myList");
+                newItem = document.getElementById("item").value;
+                listItem = document.createElement("li");
+                listItem.appendChild(document.createTextNode(newItem));
+                shoppingList.appendChild(listItem);
+            }
+        </script>
+    </body>
+</html>

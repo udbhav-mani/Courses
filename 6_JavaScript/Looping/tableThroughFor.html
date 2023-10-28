@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            body {
+                background-color: crimson;
+            }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="output"></div>
+        <script>
+            let html = "<table>";
+            let row = prompt("How many rows do you want?");
+            let col = prompt("How many cols do you want?");
+
+            for (let i = 0; i < row; i++) {
+                html += "<tr>";
+                for (let j = 0; j < col; j++) {
+                    html += "<td><h1> 🐣 </h1></td>";
+                }
+                html += "</tr>";
+            }
+
+            html += "</table>";
+
+            document.getElementById("output").innerHTML = html;
+        </script>
+    </body>
+</html>

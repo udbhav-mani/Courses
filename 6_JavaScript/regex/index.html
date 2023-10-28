@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Regex testing</title>
+    </head>
+    <body>
+        <textarea
+            name="inputText"
+            id="inputText"
+            cols="30"
+            rows="10"
+        ></textarea>
+        <br />
+        <label for="searchTerm">Find in text</label>
+        <input type="text" name="searchTerm" id="searchTerm" />
+        <br />
+
+        <label for="replaceTerm">Replace with</label>
+        <input type="text" name="replaceTerm" id="replaceTerm" />
+        <br />
+        <button id="searchButton">Replace</button>
+        <script>
+            let searchButton = document.getElementById("searchButton");
+
+            searchButton.addEventListener("click", () => {
+                let inputText = document.getElementById("inputText");
+                let searchTerm = document.getElementById("searchTerm").value;
+                let replaceTerm = document.getElementById("replaceTerm").value;
+                let regexPattern = new RegExp(searchTerm, "gi");
+                // let matches = inputText.value.match(regexPattern);
+                let replacedText = inputText.value.replace(
+                    regexPattern,
+                    replaceTerm
+                );
+                inputText.value = replacedText;
+                console.log(replacedText);
+            });
+        </script>
+    </body>
+</html>

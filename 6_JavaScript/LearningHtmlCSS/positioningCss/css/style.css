@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 100px auto;
+    background: #14213d;
+    height: 2000px;
+}
+
+.outer {
+    width: 150px;
+    margin: auto;
+    border: 4px dashed #fca311;
+    position: relative;
+}
+
+.inner {
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+}
+
+.first {
+    background-color: #edf2f4;
+}
+
+.second {
+    background-color: #ef233c;
+    position: absolute;
+    top: 100px;
+    left: 50px;
+}
+
+.third {
+    background-color: #d90429;
+}
+
+.fourth {
+    background-color: slateblue;
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Event Delegation</title>
+    </head>
+    <body>
+        <main>
+            main
+            <br />
+            <div>div<button id="first">Hello</button></div>
+        </main>
+        <script>
+            window.name = "udbhav";
+            let person = {
+                name: "abhishek",
+                fun: (function () {
+                    console.log(this);
+                })(),
+            };
+            // var target = document
+            //     .getElementById("first")
+            //     .addEventListener("click", person.fun);
+            // person.fun();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <div id="output"></div>
+        <script>
+            function p(c) {
+                c.pop();
+                console.log(c);
+            }
+            function get(a, b, c) {
+                let response = a + b;
+                a = 10;
+                b = 20;
+                c = [1, 2, 3];
+                console.log(c);
+                p(c);
+                console.log(c.concat(c));
+
+                return response;
+            }
+            a = 1;
+            b = 2;
+            console.log(get(a, b));
+
+            // console.log(response);
+        </script>
+    </body>
+</html>

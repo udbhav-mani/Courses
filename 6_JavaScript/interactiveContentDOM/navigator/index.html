@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>My Webpage</title>
+    </head>
+    <body>
+        <h1 id="header">Welome to my page</h1>
+        <input type="button" value="Press me" onclick="buttonPressed()" />
+        <script>
+            function buttonPressed() {
+                alert("Hello 😍");
+            }
+            setTimeout(() => {
+                let target = document.getElementById("header");
+                target.innerHTML = "Please press the button 😟😟";
+            }, 3000);
+        </script>
+    </body>
+</html>
