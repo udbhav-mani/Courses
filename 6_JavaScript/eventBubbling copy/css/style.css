@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 100px auto;
+    background: #14213d;
+}
+
+div {
+    padding: 70px;
+    max-width: 500px;
+    min-height: 150px;
+}
+
+.grandparent {
+    margin: auto;
+    background-color: #db9f3e;
+}
+
+.parent {
+    background-color: #edf2f4;
+}
+
+.child {
+    background-color: #ef233c;
+}
