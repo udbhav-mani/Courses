@@ -1,0 +1,31 @@
+<hr />
+<hr />
+<div class="container">
+  <div class="container"></div>
+  <h2 class="text-center">Reimbursements</h2>
+  <div class="card bg-dark">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Employee ID -> {{ formData.emp_id }}</li>
+      <li class="list-group-item">User Name -> {{ formData.emp_name }}</li>
+      <li class="list-group-item">
+        Designation -> {{ formData.emp_designation }}
+      </li>
+    </ul>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name of Item</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reimbursement of formData.reimbursement">
+        <td>{{ reimbursement.rname }}</td>
+        <td>{{ reimbursement.ramount }}</td>
+        <td>{{ reimbursement.type }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

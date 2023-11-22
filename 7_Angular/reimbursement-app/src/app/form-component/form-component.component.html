@@ -1,0 +1,111 @@
+<h1 class="text-center">Reimbursement app</h1>
+<hr />
+<hr />
+
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="contaner">
+      <div class="row">
+        <form #formData="ngForm" (ngSubmit)="onSubmit()">
+          <div class="user-details" class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="autoSizingInput"
+              placeholder="id"
+              [(ngModel)]="inputForms.emp_id"
+              name="emp_id"
+              required
+            />
+            <label class="visually-hidden" for="autoSizingInput"
+              >username</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="autoSizingInput"
+              placeholder="username"
+              [(ngModel)]="inputForms.emp_name"
+              name="emp_name"
+              required
+            />
+            <label class="visually-hidden" for="autoSizingInput"></label>
+            <input
+              type="text"
+              class="form-control"
+              id="autoSizingInput"
+              placeholder="designation"
+              [(ngModel)]="inputForms.emp_designation"
+              name="designation"
+              required
+            />
+            <label class="visually-hidden" for="autoSizingInput"></label>
+          </div>
+          <div
+            class="input-group"
+            *ngFor="let frm of inputForms.reimbursement; let i = index"
+          >
+            <div class="col-auto">
+              <label class="visually-hidden" for="autoSizingInput">ID</label>
+              <input
+                type="text"
+                class="form-control"
+                id="autoSizingInput"
+                placeholder="name"
+                [(ngModel)]="inputForms.reimbursement[i].rname"
+                name="rname{{ i }}"
+                required
+              />
+            </div>
+            <div class="col-auto">
+              <label class="visually-hidden" for="autoSizingInputGroup"
+                >name</label
+              >
+              <div class="input-group mb-1">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="autoSizingInputGroup"
+                  placeholder="amount"
+                  [(ngModel)]="inputForms.reimbursement[i].ramount"
+                  name="rname{{ i }}"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-auto">
+              <label class="visually-hidden" for="autoSizingSelect"
+                >Preference</label
+              >
+              <select
+                class="form-select"
+                id="autoSizingSelect"
+                [(ngModel)]="inputForms.reimbursement[i].type"
+                name="rtype{{ i }}"
+                required
+              >
+                <option selected disabled>Choose...</option>
+                <option value="cash">Cash</option>
+                <option value="online">Online</option>
+                <option value="cheque">Cheque</option>
+              </select>
+            </div>
+            <button
+              type="button"
+              class="btn btn-danger mb-1"
+              (click)="onDelete(i)"
+              *ngIf="inputForms.reimbursement.length > 1"
+            >
+              Delete
+            </button>
+          </div>
+
+          <button type="button" (click)="onAdd()" class="btn btn-primary">
+            Add Reimbursement
+          </button>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

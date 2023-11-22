@@ -1,16 +1,25 @@
-import { Component } from "@angular/core";
-import { Recipe } from "../recipe.model";
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Recipe } from '../recipe.model';
+import { RecipeService } from '../recipes.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-    selector:"app-recipe-list",
-    templateUrl:"./recipe-list.component.html",
-    styleUrls:["./recipe-list.component.css"]
-
+  selector: 'app-recipe-list',
+  templateUrl: './recipe-list.component.html',
+  styleUrls: ['./recipe-list.component.css'],
 })
-export class RecipeListComponent{
-    recipes: Recipe[] = [
-        new Recipe('Recipe 1',"This is a test recipe", "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&webp=true&resize=375,341"),
-        new Recipe('Recipe 1',"This is a test recipe", "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&webp=true&resize=375,341"),
-        new Recipe('Recipe 1',"This is a test recipe", "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&webp=true&resize=375,341"),
-    ]
+export class RecipeListComponent {
+  constructor(
+    private recService: RecipeService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  recipes: Recipe[];
+  ngOnInit() {
+    this.recipes = this.recService.getRecipe();
+  }
+  onNewRecipe() {
+    this.router.navigate(['new'], { relativeTo: this.route });
+  }
 }
